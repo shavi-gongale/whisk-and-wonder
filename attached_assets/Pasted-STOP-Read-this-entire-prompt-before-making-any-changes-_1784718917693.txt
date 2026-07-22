@@ -1,0 +1,387 @@
+STOP.
+
+Read this entire prompt before making any changes.
+
+Continue from my existing project.
+
+IMPORTANT:
+
+• Do NOT redesign my website.
+• Do NOT rebuild from scratch.
+• Do NOT change my luxury bakery design language.
+• Continue from the current implementation.
+• Keep every working feature.
+• Improve the existing implementation until it feels like a real premium commercial bakery platform.
+• Do NOT skip any requirement below.
+• Complete every section before marking the task finished.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1 — GLOBAL UI POLISH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Improve the entire website visually.
+
+Requirements:
+
+• Remove all emojis from the entire website.
+• Replace emojis with premium SVG icons (Lucide, Heroicons or Phosphor Icons).
+• Improve spacing everywhere.
+• Improve alignment.
+• Improve typography.
+• Improve responsiveness.
+• Improve shadows.
+• Improve borders.
+• Improve buttons.
+• Improve hover animations.
+• Improve visual hierarchy.
+• No page should feel empty.
+• Every section should feel balanced.
+• Keep the luxury bakery aesthetic.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2 — HERO SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The homepage hero section still needs improvement.
+
+Requirements:
+
+• Hero image must always be 100vw × 100vh.
+• Image should remain centered.
+• Do NOT crop important parts of the bakery.
+• Hero should feel cinematic.
+• Add a luxury dark gradient overlay.
+• Text must always remain readable.
+• Remove all unwanted white space.
+• Hero image should smoothly scale on large screens.
+• Make the entrance of the bakery the visual focus.
+
+Hero Text:
+
+• No clipping.
+• Responsive typography.
+• Proper line-height.
+• Proper spacing.
+• Perfect readability on Desktop, Laptop, Tablet and Mobile.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3 — HOMEPAGE IMPROVEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The homepage currently feels empty.
+
+Without changing my design language, add premium sections after the Hero.
+
+Include:
+
+• Featured Categories
+• Best Sellers
+• Today's Special
+• Chef Recommendations
+• Why Choose Us
+• Customer Testimonials
+• Gallery
+• Cake Studio Preview
+• Freshly Baked Today
+• Instagram Feed
+• Newsletter
+• Delivery Information
+• Store Locations
+• Frequently Asked Questions
+
+Every section should contain beautiful cards, images, animations and proper spacing.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4 — LOYALTY PAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Loyalty page looks empty and unbalanced.
+
+Redesign ONLY this page.
+
+Requirements:
+
+• Remove large empty spaces.
+• Increase content width.
+• Center the layout.
+• Make the Rewards Card larger.
+• Improve typography hierarchy.
+• Add subtle premium background textures.
+• Add elegant glass cards.
+• Warm gradients.
+• Gold accents.
+• Premium dividers.
+• Beautiful information cards.
+
+Add more premium sections:
+
+• Membership Levels
+• Reward Progress
+• Benefits
+• Birthday Rewards
+• Monthly Rewards
+• Exclusive Offers
+• Points History
+• Recent Rewards
+• FAQs
+• Customer Stories
+
+The page should feel complete.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 5 — OWNER DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Redesign ONLY the Owner Dashboard.
+
+Do NOT redesign the customer website.
+
+Create a premium admin experience.
+
+Use:
+
+• Dark Brown
+• Espresso
+• Coffee Black
+• Warm Wood
+• Gold Accents
+• Glassmorphism
+• Premium Charts
+• Soft Gradients
+
+Dashboard Modules:
+
+Dashboard
+
+Products
+
+Orders
+
+Customers
+
+Reviews
+
+Coupons
+
+Analytics
+
+Settings
+
+Revenue
+
+Sales
+
+Low Stock
+
+Top Products
+
+Recent Orders
+
+Notifications
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 6 — FULL BACKEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Convert the project into a REAL production-ready application.
+
+No fake data.
+
+No placeholders.
+
+Recommended stack:
+
+Frontend:
+React
+
+Backend:
+Node.js + Express
+
+Database:
+Supabase (preferred) or PostgreSQL
+
+Authentication:
+Supabase Auth
+
+Storage:
+Supabase Storage
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 7 — DATABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Store everything inside the database.
+
+Products
+
+Categories
+
+Customers
+
+Orders
+
+Order Items
+
+Addresses
+
+Wishlist
+
+Reviews
+
+Coupons
+
+Newsletter
+
+Contact Messages
+
+Cake Studio Orders
+
+Admin Settings
+
+User Profiles
+
+Reward Points
+
+Loyalty Members
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 8 — AUTHENTICATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement real authentication.
+
+Customer Login
+
+Customer Signup
+
+Forgot Password
+
+Email Verification
+
+Owner Login
+
+Protected Routes
+
+Session Management
+
+Persistent Login
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 9 — OWNER FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Everything should work.
+
+Owner should be able to:
+
+• Add Products
+• Edit Products
+• Delete Products
+• Hide Products
+• Upload Main Image
+• Upload Multiple Gallery Images
+• Replace Images
+• Delete Images
+• Manage Categories
+• Change Prices
+• Update Stock
+• View Orders
+• Update Order Status
+• Manage Customers
+• Manage Reviews
+• Manage Coupons
+• View Analytics
+
+Changes should immediately reflect across the website.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 10 — CUSTOMER FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Everything must work.
+
+Cart
+
+Wishlist
+
+Search
+
+Filters
+
+Sorting
+
+Checkout
+
+Address Management
+
+Map Selection
+
+Order Tracking
+
+Reviews
+
+Ratings
+
+Profile
+
+Newsletter
+
+Contact Form
+
+Coupons
+
+Loyalty Rewards
+
+Cake Studio Orders
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 11 — PERFORMANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Optimize the project.
+
+• Lazy Loading
+• Image Optimization
+• Code Splitting
+• Skeleton Loading
+• Error Handling
+• Loading States
+• Responsive Layout
+• Accessibility
+• Performance Optimization
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL QUALITY CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This should NOT look like a student project.
+
+It should feel like a real premium bakery platform comparable to a production-ready luxury e-commerce website.
+
+Every button must work.
+
+Every form must work.
+
+Every interaction must work.
+
+Every page must work.
+
+All data must come from the database.
+
+Remove all placeholder functionality.
+
+Replace every mock feature with real functionality.
+
+Test the complete application from:
+
+• Homepage
+• Product Pages
+• Cake Studio
+• Cart
+• Checkout
+• Order Tracking
+• Loyalty Program
+• Customer Dashboard
+• Owner Dashboard
+
+Only mark the task complete after verifying that every feature above has been fully implemented.
