@@ -1,0 +1,249 @@
+Continue from my existing project.
+
+Do NOT redesign the website.
+
+Do NOT remove any existing features.
+
+Everything is working well, but I want to polish it into a premium commercial bakery website.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. FIX MAP LOCATION
+
+The checkout map is currently showing France.
+
+This is incorrect.
+
+The bakery is located in Pune, Maharashtra, India.
+
+Set the default map location to Pune.
+
+Default coordinates should point near Bibwewadi, Pune.
+
+When users open the address picker:
+
+• Open the map centered on Pune.
+• Detect current location if permission is granted.
+• Allow searching any address.
+• Allow dragging the map pin.
+• Save Home / Work / Other addresses.
+• Display proper Indian addresses.
+
+Prepare the architecture for Google Maps API or Mapbox.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2. ENHANCE THE MAGIC CAKE STUDIO
+
+Do NOT redesign it.
+
+Keep the current concept but make it feel like a premium luxury cake designer.
+
+It should NOT feel childish.
+
+It should feel like customers are designing a real bakery cake.
+
+Improve the overall UI, interactions and experience.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CUSTOMER SHOULD BE ABLE TO CUSTOMIZE:
+
+Cake Weight
+
+• 0.5 KG
+• 1 KG
+• 1.5 KG
+• 2 KG
+• 3 KG
+• 4 KG
+• 5 KG
+• Custom Weight
+
+Cake Shape
+
+• Round
+• Square
+• Heart
+• Rectangle
+• Hexagon
+
+Cake Layers
+
+• 1 Layer
+• 2 Layers
+• 3 Layers
+• 4 Layers
+• 5 Layers
+
+Cake Flavor
+
+• Chocolate
+• Vanilla
+• Strawberry
+• Black Forest
+• Red Velvet
+• Blueberry
+• Butterscotch
+• Mango
+• Pineapple
+• Coffee
+• Hazelnut
+• Custom Flavor
+
+Cream Type
+
+• Buttercream
+• Whipped Cream
+• Ganache
+• Fondant
+
+Cake Color
+
+Premium color palette.
+
+Live preview updates.
+
+Decoration
+
+• Fresh Flowers
+• Chocolates
+• Macarons
+• Berries
+• Candles
+• Gold Leaf
+• Sprinkles
+• Fruits
+• Cookies
+• Ferrero
+• KitKat
+• Oreo
+• Name Topper
+• Acrylic Topper
+
+Cake Message
+
+Custom Text
+
+Delivery Date
+
+Delivery Time
+
+Special Instructions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3. LIVE PRICE CALCULATION
+
+Every option should immediately update the total price.
+
+Changing:
+
+• Weight
+• Layers
+• Flavor
+• Decorations
+• Premium options
+
+must instantly change the total cost.
+
+Show price breakdown.
+
+Base Price
+
++
+
+Decoration Cost
+
++
+
+Premium Charge
+
++
+
+Taxes
+
+=
+
+Grand Total
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4. LIVE PREVIEW
+
+Every option should instantly update the cake preview.
+
+Smooth animations.
+
+Premium transitions.
+
+No lag.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5. SAVE CUSTOM DESIGN
+
+Customers should be able to:
+
+• Save Design
+• Edit Later
+• Duplicate Design
+• Share Design (structure ready)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6. ADD TO CART
+
+The customized cake should save every selected option.
+
+Order summary must include:
+
+Weight
+
+Layers
+
+Flavor
+
+Cream
+
+Decoration
+
+Message
+
+Delivery Date
+
+Final Price
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+7. PREMIUM EXPERIENCE
+
+Improve spacing.
+
+Improve typography.
+
+Improve cards.
+
+Improve shadows.
+
+Improve animations.
+
+Improve transitions.
+
+Improve hover effects.
+
+Everything should feel like an Awwwards-winning premium bakery website.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT
+
+Do NOT redesign the Cake Studio.
+
+Keep the current layout and concept.
+
+Only enhance it into a premium, realistic, luxury cake customization experience.
+
+Do not make it playful or childish.
+
+Everything should feel elegant, smooth, modern, and production-ready.

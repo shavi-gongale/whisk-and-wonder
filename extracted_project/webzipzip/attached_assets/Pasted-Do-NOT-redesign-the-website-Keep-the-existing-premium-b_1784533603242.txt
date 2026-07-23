@@ -1,0 +1,150 @@
+Do NOT redesign the website.
+
+Keep the existing premium bakery theme.
+
+Only implement the following improvements.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. HERO IMAGE
+
+Use the uploaded bakery image as the permanent Hero background.
+
+Do NOT crop it.
+
+Do NOT zoom it.
+
+Do NOT replace it.
+
+The complete bakery storefront must always remain visible.
+
+Display it in full-screen width and full-screen height (100vw × 100vh).
+
+Use object-fit: contain or another approach that preserves the full image while keeping it centered. Do not cut off the bakery entrance, logo, bicycle, flowers, cat, or surrounding details.
+
+The image should always remain centered on all desktop screen sizes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2. ENTRY ANIMATION
+
+During the intro animation,
+
+DO NOT crop or replace the image.
+
+Keep the full bakery image visible.
+
+The only animation should be:
+
+• Slow cinematic zoom toward the bakery entrance.
+• Very subtle camera movement.
+• Warm lighting increase.
+• Floating particles.
+• Door glow.
+• Then transition into the website.
+
+No fake camera movement.
+
+No aggressive zoom.
+
+The complete bakery image should remain visible until the final zoom into the entrance.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3. OWNER PRODUCT IMAGES
+
+Inside the Owner Dashboard,
+
+allow the owner to manage product images.
+
+Owner should be able to:
+
+• Upload Main Product Image
+
+• Upload Multiple Gallery Images
+
+• Replace Existing Images
+
+• Delete Images
+
+• Reorder Gallery Images using drag and drop
+
+• Select Thumbnail Image
+
+• Preview Images before saving
+
+Every uploaded image should immediately appear on the website after saving.
+
+Do not hardcode product images.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4. PRODUCT CARDS
+
+Some product cards are not fully visible.
+
+Fix all layouts.
+
+Cards should always be fully visible.
+
+Nothing should be cut off.
+
+Proper spacing.
+
+Equal heights.
+
+Responsive grid.
+
+Images should fit perfectly.
+
+Buttons should always remain visible.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5. PRODUCT DETAILS
+
+Each product should include:
+
+• Multiple Images
+
+• Image Gallery
+
+• Zoom on Hover
+
+• Description
+
+• Ingredients
+
+• Weight
+
+• Available Sizes
+
+• Rating
+
+• Reviews
+
+• Stock
+
+• Preparation Time
+
+• Delivery Estimate
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6. IMAGE QUALITY
+
+Optimize images for fast loading without reducing visual quality.
+
+Maintain sharp, premium-looking images throughout the website.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT
+
+Do not change my existing design language.
+
+Keep the luxury bakery aesthetic.
+
+Only improve functionality, layouts, responsiveness, and image handling.
+
+Nothing should look broken, cropped, stretched, or unfinished.

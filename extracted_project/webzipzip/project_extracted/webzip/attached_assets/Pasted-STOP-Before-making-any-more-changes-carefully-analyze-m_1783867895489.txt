@@ -1,0 +1,298 @@
+STOP.
+
+Before making any more changes, carefully analyze my entire existing project.
+
+This is a correction request.
+
+You misunderstood my previous instructions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+VERY IMPORTANT
+
+I have attached a bakery reference image.
+
+THIS IMAGE IS FINAL.
+
+It is NOT inspiration.
+
+It is NOT concept art.
+
+It is NOT a style reference.
+
+It is the EXACT artwork that must be used.
+
+DO NOT recreate it.
+
+DO NOT redraw it.
+
+DO NOT generate another bakery.
+
+DO NOT convert it into a flat illustration.
+
+DO NOT simplify it.
+
+DO NOT replace it with your own version.
+
+DO NOT build a cartoon bakery.
+
+USE THE EXACT UPLOADED IMAGE.
+
+Use it directly as the full-screen Entry Experience background.
+
+Do not recreate it using HTML, CSS, SVG or generated graphics.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ENTRY EXPERIENCE
+
+The bakery image is NOT the Hero section.
+
+It is ONLY the cinematic entry experience.
+
+The first screen should contain only:
+
+• The exact uploaded bakery image
+• Full screen
+• Premium Enter Bakery button
+• Ambient particles
+• Warm lighting overlay
+• Window glow
+• Very subtle camera zoom
+• Soft cinematic transition
+
+Allowed animations only:
+
+• Door opening illusion
+• Camera zoom
+• Dust particles
+• Warm lighting
+• Flower movement
+• Hanging sign movement
+• Window glow
+
+Everything else in the image must remain unchanged.
+
+Do not modify the artwork.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After clicking "Enter Bakery"
+
+Create a smooth cinematic transition into the Hero section.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HERO SECTION
+
+This is a completely different scene.
+
+Do NOT reuse the bakery exterior.
+
+Create a premium luxury bakery interior.
+
+Centerpiece:
+
+One premium realistic strawberry cake.
+
+The cake is the Hero.
+
+Everything else supports the cake.
+
+Around the cake:
+
+• Floating strawberries
+• Floating macarons
+• Floating donuts
+• Floating cookies
+• Mint leaves
+• Flowers
+• Sparkles
+• Flour particles
+
+The cake should slowly rotate.
+
+Mouse movement should create subtle parallax.
+
+Use warm cinematic lighting.
+
+Beautiful depth of field.
+
+Luxury typography.
+
+Minimal text.
+
+Buttons:
+
+• Explore Menu
+• Design Your Cake
+
+Premium hover animations.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRODUCT EXPERIENCE
+
+Do NOT create a generic product grid.
+
+Instead create an elegant luxury bakery showcase.
+
+Products should feel displayed inside a premium artisan bakery.
+
+Every product should include:
+
+• Premium realistic image
+• Hover lift
+• Soft shadow
+• Smooth animation
+• Product detail modal
+• Rating
+• Ingredients
+• Quantity selector
+• Add to Cart
+• Wishlist
+• Share
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FUNCTIONALITY
+
+Make this website behave like a real production-ready bakery application.
+
+Everything must work.
+
+Nothing should be a placeholder.
+
+Implement complete functionality for:
+
+✓ Add to Cart
+
+✓ Remove from Cart
+
+✓ Update Quantity
+
+✓ Wishlist
+
+✓ Search
+
+✓ Live Search Suggestions
+
+✓ Product Filtering
+
+✓ Product Details
+
+✓ Newsletter Subscription
+
+✓ Contact Form
+
+✓ Authentication Structure
+
+✓ Login
+
+✓ Signup
+
+✓ Forgot Password
+
+✓ User Profile
+
+✓ Order History
+
+✓ Checkout Flow
+
+✓ Order Confirmation
+
+✓ Toast Notifications
+
+✓ Loading States
+
+✓ Empty States
+
+✓ Error Handling
+
+✓ Form Validation
+
+✓ Responsive Design
+
+✓ Dark Mode
+
+✓ Light Mode
+
+✓ Mobile Navigation
+
+Every button must work.
+
+Every icon must work.
+
+Every page must work.
+
+No dead buttons.
+
+No fake interactions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CODE QUALITY
+
+Use reusable React components.
+
+Modern React.
+
+Clean folder structure.
+
+Reusable hooks.
+
+Proper state management.
+
+Optimized performance.
+
+Lazy loading.
+
+Smooth animations.
+
+No duplicated code.
+
+Prepare everything for future Firebase or Supabase integration.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DESIGN STYLE
+
+This should feel like a collaboration between:
+
+Apple
+
+Awwwards
+
+Luxury French Bakery
+
+Pixar-quality lighting
+
+Modern editorial design
+
+Premium UX
+
+Minimal but immersive.
+
+Never look childish.
+
+Never look like a template.
+
+Never create generic bakery UI.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FINAL REQUIREMENT
+
+Do not continue until the Entry Experience uses the EXACT uploaded bakery image.
+
+Do not redesign the bakery.
+
+Do not replace the bakery.
+
+Do not generate another bakery.
+
+The uploaded bakery image is the final approved artwork.
+
+Only after preserving that image exactly should you continue building the rest of the experience.
+
+The final website should feel like an Awwwards-winning premium interactive bakery experience with fully working functionality and production-ready architecture.

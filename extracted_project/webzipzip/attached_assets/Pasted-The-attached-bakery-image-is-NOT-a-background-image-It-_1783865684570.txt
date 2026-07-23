@@ -1,0 +1,125 @@
+The attached bakery image is NOT a background image.
+
+It is the complete art direction for the first scene of the website.
+
+Study this image carefully and recreate this exact atmosphere, architecture, composition and mood inside the website.
+
+Do NOT simply display the image.
+
+Build this scene using HTML, CSS, React and animations.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THIS IS NOT THE HOMEPAGE.
+
+THIS IS NOT THE HERO SECTION.
+
+THIS IS ONLY THE CINEMATIC ENTRY EXPERIENCE.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The user should feel like they are standing outside a premium luxury bakery before entering.
+
+Everything should feel alive.
+
+Requirements:
+
+• Full screen scene
+• No navbar
+• No hero content
+• No products
+• No cards
+• No marketing text
+• No footer
+
+Only the bakery.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Recreate every important detail from the reference image.
+
+Warm wooden architecture.
+
+Flower decorations.
+
+Large glass windows.
+
+Warm interior glow.
+
+Wooden sign.
+
+Bicycle.
+
+Plants.
+
+Lanterns.
+
+Stone pathway.
+
+Luxury atmosphere.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AMBIENT ANIMATIONS
+
+The scene should never feel static.
+
+Flowers gently move.
+
+Leaves sway.
+
+Lantern lights flicker softly.
+
+Warm window light glows.
+
+Dust particles float through sunlight.
+
+The hanging sign swings very slowly.
+
+Clouds move.
+
+The cat occasionally blinks and moves its tail.
+
+Very subtle cinematic camera breathing movement.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create only one call-to-action.
+
+"Enter Bakery"
+
+The button should look like premium glass.
+
+Rounded.
+
+Luxury.
+
+Soft glow.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When the user clicks Enter Bakery
+
+The wooden door slowly opens.
+
+The camera smoothly moves toward the entrance.
+
+Warm light becomes stronger.
+
+The transition begins.
+
+Do NOT instantly navigate.
+
+Do NOT create the Hero section yet.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT
+
+Do not use the uploaded image directly.
+
+Use it only as a concept reference.
+
+Recreate this environment with layered assets, depth, lighting and animation.
+
+The final result should feel like the opening shot of a Pixar movie mixed with an Awwwards website.

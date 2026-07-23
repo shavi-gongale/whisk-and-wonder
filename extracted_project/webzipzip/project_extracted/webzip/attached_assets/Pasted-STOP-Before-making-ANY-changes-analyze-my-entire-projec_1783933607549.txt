@@ -1,0 +1,614 @@
+STOP.
+
+Before making ANY changes, analyze my entire project.
+
+This project is already working.
+
+DO NOT rebuild it from scratch.
+
+DO NOT remove any existing functionality.
+
+DO NOT simplify the UI.
+
+DO NOT replace my design.
+
+Your job is to transform this project into a PREMIUM, PRODUCTION-READY DIGITAL PRODUCT.
+
+Think like a Senior Product Designer + Senior React Developer + Senior Full Stack Engineer.
+
+This should no longer look like a college project.
+
+It should feel like an Awwwards-quality luxury bakery experience.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DESIGN GOAL
+
+This is NOT just a bakery website.
+
+This is an immersive premium bakery experience.
+
+Imagine a collaboration between:
+
+• Apple
+• Awwwards
+• Pixar
+• Dior
+• Luxury French Bakery
+• Modern SaaS Product
+
+Everything should feel luxurious, elegant, cinematic and interactive.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DO NOT REMOVE
+
+• Existing Pages
+• Existing Features
+• Existing Routing
+• Existing Products
+• Existing Design
+• Existing Animations
+
+Only improve and extend.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ENTRY EXPERIENCE
+
+Keep the uploaded bakery entrance image.
+
+Improve the cinematic experience.
+
+When user enters:
+
+• Soft bakery ambience
+• Premium transition
+• Warm light bloom
+• Door opening sound
+• Camera zoom
+• Smooth fade to Hero
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOADING EXPERIENCE
+
+Completely redesign the loading screen.
+
+Do NOT use a spinner.
+
+Create a luxury bakery loading animation.
+
+Background:
+
+Warm cream.
+
+Soft golden lighting.
+
+Floating flour particles.
+
+Small sparkles.
+
+Center:
+
+Whisk & Wonder logo.
+
+Text:
+
+Preparing your bakery experience...
+
+Animation ideas:
+
+• Rotating whisk
+
+• Steam rising
+
+• Cake decorating itself
+
+• Flour becoming sparkles
+
+Duration:
+
+3–4 seconds.
+
+Near completion:
+
+Play bakery bell sound.
+
+Warm light bloom.
+
+Fade into bakery entrance.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WEBSITE MUSIC
+
+Add beautiful premium background music.
+
+The music must NOT autoplay immediately.
+
+First show a beautiful music control.
+
+Example:
+
+🎵 Bakery Ambience
+
+Allow users to:
+
+• Play
+
+• Pause
+
+• Volume
+
+• Mute
+
+Music should include:
+
+Soft piano
+
+Coffee shop ambience
+
+Birds
+
+Bakery sounds
+
+Very relaxing.
+
+Sound effects:
+
+Door Bell
+
+Button Click
+
+Hover
+
+Cart Add
+
+Wishlist
+
+Checkout
+
+Cake Complete
+
+Keep volume subtle.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HERO
+
+Improve Hero.
+
+Premium rotating cake.
+
+Floating desserts.
+
+Luxury lighting.
+
+Particles.
+
+Parallax.
+
+Depth.
+
+Better typography.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRODUCTS
+
+Add MANY MORE PRODUCTS.
+
+Current products are not enough.
+
+Create realistic bakery catalog.
+
+Categories:
+
+Birthday Cakes
+
+Wedding Cakes
+
+Chocolate Cakes
+
+Strawberry Cakes
+
+Cheesecakes
+
+Cupcakes
+
+Donuts
+
+Cookies
+
+Croissants
+
+Macarons
+
+Coffee
+
+Tea
+
+Bread
+
+Pastries
+
+Seasonal Specials
+
+Gift Boxes
+
+Each product must have:
+
+Name
+
+Description
+
+Price
+
+Rating
+
+Reviews
+
+Ingredients
+
+Stock
+
+Images
+
+Category
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRODUCT DETAILS
+
+Every product opens a beautiful product page.
+
+Include:
+
+Gallery
+
+Zoom
+
+Reviews
+
+Related Products
+
+Ingredients
+
+Nutrition
+
+Allergens
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OWNER ADMIN PANEL
+
+Create a complete Admin Dashboard.
+
+Owner login separate from customer.
+
+Dashboard:
+
+Revenue
+
+Orders
+
+Customers
+
+Analytics
+
+Low Stock
+
+Best Sellers
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRODUCT MANAGEMENT
+
+Owner should be able to:
+
+Add Product
+
+Delete Product
+
+Edit Product
+
+Upload Images
+
+Upload Multiple Images
+
+Change Product Name
+
+Change Price
+
+Change Description
+
+Change Category
+
+Hide Product
+
+Show Product
+
+Mark Featured
+
+Manage Stock
+
+Everything should update dynamically.
+
+Do NOT hardcode products.
+
+Prepare architecture for database.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CUSTOMER FEATURES
+
+Working:
+
+Cart
+
+Wishlist
+
+Search
+
+Product Filter
+
+Sorting
+
+Reviews
+
+Ratings
+
+Recently Viewed
+
+Recommended Products
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CHECKOUT
+
+Professional checkout.
+
+Customer should be able to:
+
+Select Address
+
+Add New Address
+
+Edit Address
+
+Delete Address
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MAP INTEGRATION
+
+Very Important.
+
+Instead of typing address only,
+
+Allow customer to choose address directly from an interactive map.
+
+Requirements:
+
+• Search address
+
+• Select location
+
+• Drag map pin
+
+• Auto detect coordinates
+
+• Save address
+
+• Save multiple addresses
+
+• Home
+
+• Work
+
+• Other
+
+Prepare architecture using Google Maps API or Mapbox.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ORDER TRACKING
+
+Preparing
+
+Baking
+
+Decorating
+
+Packaging
+
+Out For Delivery
+
+Delivered
+
+Animated progress.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LOYALTY
+
+Reward Points
+
+Coupons
+
+Referral
+
+Membership
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+NEWSLETTER
+
+Working subscription.
+
+Validation.
+
+Success message.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CONTACT
+
+Working contact form.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AI BAKERY ASSISTANT
+
+Create AI assistant.
+
+Ask:
+
+Occasion
+
+Budget
+
+Flavor
+
+People
+
+Recommend cakes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MAGIC CAKE STUDIO
+
+THIS IS THE MAIN FEATURE.
+
+Not a normal form.
+
+Build an interactive Cake Studio.
+
+Customer enters a luxury bakery workshop.
+
+Wooden table.
+
+Rotating cake.
+
+Ingredient shelves.
+
+Drag & Drop:
+
+Chocolate
+
+Cookies
+
+Cream
+
+Flowers
+
+Donuts
+
+Macarons
+
+Sprinkles
+
+Candles
+
+Ribbon
+
+Every ingredient should snap naturally.
+
+Live price updates.
+
+Undo.
+
+Redo.
+
+Rotate cake.
+
+Zoom cake.
+
+Reset.
+
+Save design.
+
+Add custom cake to cart.
+
+Later prepare for Three.js / React Three Fiber integration.
+
+Keep architecture modular.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ANIMATIONS
+
+Premium only.
+
+GSAP.
+
+Framer Motion.
+
+Parallax.
+
+Glass reflections.
+
+Floating objects.
+
+Luxury easing.
+
+Micro interactions.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RESPONSIVENESS
+
+Desktop
+
+Tablet
+
+Mobile
+
+Perfect everywhere.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PERFORMANCE
+
+Lazy Loading
+
+Code Splitting
+
+Optimized Images
+
+Smooth Animations
+
+GPU Accelerated Effects
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CODE QUALITY
+
+Modern React.
+
+Reusable Components.
+
+Context API or Zustand.
+
+Clean Folder Structure.
+
+Prepare everything for Firebase or Supabase.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FINAL GOAL
+
+Do not stop after one improvement.
+
+Continue refining until this feels like a premium startup product.
+
+The final experience should make users say:
+
+"This doesn't feel like a bakery website.
+
+It feels like an interactive luxury digital experience."
+
+Quality is more important than speed.
+
+Do not simplify anything.

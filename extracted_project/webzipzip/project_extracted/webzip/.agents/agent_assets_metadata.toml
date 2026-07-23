@@ -1,0 +1,44 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "rdPS7U7CcEQYshdA_A2ix"
+uri = "file://src/assets/audio/sfx-wishlist.mp3"
+type = "audio"
+title = "wishlist"
+
+[[outputs]]
+id = "oOP1l-4wsEfwUtB9qMWxT"
+uri = "file://src/assets/audio/sfx-click.mp3"
+type = "audio"
+title = "click"
+
+[[outputs]]
+id = "-h00MhNfY3W_IeTX6CA9l"
+uri = "file://src/assets/audio/sfx-doorbell.mp3"
+type = "audio"
+title = "doorbell"
+
+[[outputs]]
+id = "mn5-TWZPPbz3YuP__ZN0c"
+uri = "file://src/assets/audio/sfx-cart.mp3"
+type = "audio"
+title = "cart add"
+
+[[outputs]]
+id = "CRgVTpKUEQyuLaR_7D1g0"
+uri = "file://src/assets/audio/sfx-cake-complete.mp3"
+type = "audio"
+title = "cake complete"
+
+[[outputs]]
+id = "HZ0xWp6kKuWaE5q0Pe7K4"
+uri = "file://src/assets/audio/bakery-ambience.mp3"
+type = "audio"
+title = "bakery ambience loop"
+
+[[outputs]]
+id = "yKAfqH6MAt59V_2v3zMkr"
+uri = "file://src/assets/audio/sfx-hover.mp3"
+type = "audio"
+title = "hover"
