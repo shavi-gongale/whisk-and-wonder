@@ -9,6 +9,7 @@ import {
   Coffee, Menu, X, Check, Gift, ShoppingBag,
   Layers, Sparkles, User, LogOut, MessageSquare, Phone,
   ThumbsUp, Volume2, VolumeX, BarChart3, Bell, Settings,
+  Clock, Zap, Package, CheckCircle, Leaf, Users, Award, Truck,
 } from "lucide-react";
 
 // ── Contexts ──────────────────────────────────────────────────────────────────
@@ -64,11 +65,11 @@ function LogoMark({ size = 26, color = C.hazelnut }: { size?: number; color?: st
 }
 
 // ─── Section Label ────────────────────────────────────────────────────────────
-function SectionLabel({ children, dark }: { children: React.ReactNode; dark: boolean }) {
+function SectionLabel({ children, dark, pClassName }: { children: React.ReactNode; dark: boolean; pClassName?: string }) {
   return (
     <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:18 }}>
       <div style={{ width:22, height:1, background:dark?C.apricot:C.peach, opacity:0.55 }} />
-      <p style={{ fontFamily:sans, fontSize:"0.63rem", fontWeight:700, color:dark?C.apricot:C.peach, letterSpacing:"0.3em" }}>
+      <p className={pClassName} style={{ fontFamily:sans, fontSize:"0.63rem", fontWeight:700, color:dark?C.apricot:C.peach, letterSpacing:"0.3em" }}>
         {String(children).toUpperCase()}
       </p>
       <div style={{ width:22, height:1, background:dark?C.apricot:C.peach, opacity:0.55 }} />
@@ -1727,7 +1728,7 @@ function TodaysSpecialSection({ dark, onProduct }: { dark:boolean; onProduct:(p:
 
 // ─── FRESHLY BAKED TODAY TICKER ────────────────────────────────────────────────
 function FreshlyBakedTodaySection({ dark }: { dark:boolean }) {
-  const items = ["🥐 Butter Croissants","🎂 Chocolate Ganache Cake","🫐 Blueberry Cheesecake","🌈 Assorted Macarons","🧁 Cinnamon Rolls","🍰 Almond Tart","❤️ Red Velvet Cupcakes","🍞 Sourdough Bread","🥭 Mango Mousse Cake","🍪 Oreo Cheesecake","✨ Hazelnut Praline Cake","🌱 Vegan Banana Bread"];
+  const items = ["Butter Croissants","Chocolate Ganache Cake","Blueberry Cheesecake","Assorted Macarons","Cinnamon Rolls","Almond Tart","Red Velvet Cupcakes","Sourdough Bread","Mango Mousse Cake","Oreo Cheesecake","Hazelnut Praline Cake","Vegan Banana Bread"];
   const doubled = [...items, ...items];
   const bg = dark ? "#1E0E06" : "#2A1A0E";
   return (
@@ -1750,13 +1751,13 @@ function FreshlyBakedTodaySection({ dark }: { dark:boolean }) {
 
 // ─── WHY CHOOSE US ────────────────────────────────────────────────────────────
 function WhyChooseUsSection({ dark }: { dark:boolean }) {
-  const features = [
-    { icon:"🌸", title:"100% Fresh Daily",        desc:"Every item is baked fresh each morning. Nothing from yesterday, ever." },
-    { icon:"✨", title:"Premium Ingredients",      desc:"Belgian chocolate, farm-fresh dairy, real butter. Zero artificial preservatives." },
-    { icon:"🚀", title:"Fast Pune Delivery",       desc:"Doorstep delivery across all of Pune — most orders in under 60 minutes." },
-    { icon:"🎂", title:"Custom Dream Cakes",       desc:"Fully personalised cakes crafted exactly the way you picture them." },
-    { icon:"⭐", title:"12 000+ Happy Customers", desc:"Trusted by families across Pune since we first opened our doors in 2008." },
-    { icon:"🌱", title:"Eggless & Vegan Options",  desc:"Our full menu includes beautiful eggless and vegan creations — same quality, same love." },
+  const features: { Icon: React.ElementType; title:string; desc:string }[] = [
+    { Icon: Sparkles, title:"100% Fresh Daily",        desc:"Every item is baked fresh each morning. Nothing from yesterday, ever." },
+    { Icon: Award,    title:"Premium Ingredients",      desc:"Belgian chocolate, farm-fresh dairy, real butter. Zero artificial preservatives." },
+    { Icon: Truck,    title:"Fast Pune Delivery",       desc:"Doorstep delivery across all of Pune — most orders in under 60 minutes." },
+    { Icon: Gift,     title:"Custom Dream Cakes",       desc:"Fully personalised cakes crafted exactly the way you picture them." },
+    { Icon: Users,    title:"12,000+ Happy Customers",  desc:"Trusted by families across Pune since we first opened our doors in 2008." },
+    { Icon: Leaf,     title:"Eggless & Vegan Options",  desc:"Our full menu includes beautiful eggless and vegan creations — same quality, same love." },
   ];
   return (
     <section style={{ background:dark?"#1A1008":C.oats, padding:"100px 24px" }}>
@@ -1774,7 +1775,7 @@ function WhyChooseUsSection({ dark }: { dark:boolean }) {
               transition={{ delay:i*0.08, duration:0.55 }}
               whileHover={{ y:-7, boxShadow:`0 28px 64px rgba(0,0,0,${dark?0.38:0.10})` }}
               style={{ padding:"34px 28px", borderRadius:24, background:dark?"rgba(255,255,255,0.04)":C.crema, border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}`, cursor:"default", transition:"box-shadow 0.28s ease, transform 0.28s ease" }}>
-              <div style={{ fontSize:"2.1rem", marginBottom:18 }}>{f.icon}</div>
+              <div style={{ marginBottom:18, display:"flex" }}><f.Icon size={28} color={dark?C.apricot:C.peach}/></div>
               <h3 style={{ fontFamily:serif, fontSize:"1.06rem", fontWeight:700, color:dark?C.crema:C.cocoa, marginBottom:10 }}>{f.title}</h3>
               <p style={{ fontFamily:sans, fontSize:"0.82rem", color:dark?C.shortbread:C.hazelnut, lineHeight:1.82, opacity:0.8 }}>{f.desc}</p>
             </motion.div>
@@ -1787,11 +1788,11 @@ function WhyChooseUsSection({ dark }: { dark:boolean }) {
 
 // ─── DELIVERY INFO ────────────────────────────────────────────────────────────
 function DeliveryInfoSection({ dark }: { dark:boolean }) {
-  const infos = [
-    { icon:"🕐", title:"Delivery Hours",  value:"8:00 AM – 10:00 PM, Tue – Sun" },
-    { icon:"✅", title:"Free Delivery",   value:"On all orders above ₹500" },
-    { icon:"⚡", title:"Same-Day",        value:"Order before 6 PM for same-day delivery" },
-    { icon:"📦", title:"Custom Cakes",    value:"48 hrs advance notice required" },
+  const infos: { Icon: React.ElementType; title:string; value:string }[] = [
+    { Icon: Clock,       title:"Delivery Hours",  value:"8:00 AM – 10:00 PM, Tue – Sun" },
+    { Icon: CheckCircle, title:"Free Delivery",   value:"On all orders above ₹500" },
+    { Icon: Zap,         title:"Same-Day",        value:"Order before 6 PM for same-day delivery" },
+    { Icon: Package,     title:"Custom Cakes",    value:"48 hrs advance notice required" },
   ];
   const zones = [
     { name:"Bibwewadi & Sinhagad Road", fee:"Free",  time:"30–45 min" },
@@ -1817,7 +1818,7 @@ function DeliveryInfoSection({ dark }: { dark:boolean }) {
               initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ delay:i*0.07 }}
               style={{ padding:"26px 26px", borderRadius:20, background:dark?"rgba(255,255,255,0.05)":C.oats, border:`1px solid ${dark?"rgba(255,255,255,0.08)":C.shortbread}` }}>
-              <div style={{ fontSize:"1.7rem", marginBottom:12 }}>{info.icon}</div>
+              <div style={{ marginBottom:12, display:"flex" }}><info.Icon size={22} color={dark?C.apricot:C.peach}/></div>
               <p style={{ fontFamily:sans, fontSize:"0.6rem", fontWeight:700, color:dark?C.apricot:C.peach, letterSpacing:"0.22em", marginBottom:7 }}>{info.title.toUpperCase()}</p>
               <p style={{ fontFamily:sans, fontSize:"0.86rem", color:dark?C.crema:C.cocoa, fontWeight:600, lineHeight:1.55 }}>{info.value}</p>
             </motion.div>
@@ -1906,7 +1907,7 @@ function WishlistDrawer({ open, onClose, dark, onProduct }: { open:boolean; onCl
                           <button onClick={()=>{toggle(p.id);toast(`${p.name} removed from wishlist`,"info");}} style={{ background:"none", border:"none", cursor:"pointer", color:sub, opacity:0.55, display:"flex", fontSize:"0.68rem", fontFamily:sans }}><X size={12}/> Remove</button>
                         </div>
                       </div>
-                      <span style={{ fontFamily:serif, fontSize:"0.95rem", fontWeight:700, color:C.peach, flexShrink:0 }}>${p.price}</span>
+                      <span style={{ fontFamily:serif, fontSize:"0.95rem", fontWeight:700, color:C.peach, flexShrink:0 }}>₹{p.price}</span>
                     </motion.div>
                   ))}
                 </div>

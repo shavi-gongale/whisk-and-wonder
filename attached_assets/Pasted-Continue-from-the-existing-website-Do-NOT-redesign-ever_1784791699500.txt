@@ -1,0 +1,215 @@
+Continue from the existing website.
+
+Do NOT redesign everything.
+
+Only improve the current implementation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. REMOVE ALL EMOJIS
+
+Remove every emoji from the entire website.
+
+Examples:
+
+❌ 📊 🍰 📦 ⭐ 🎁 ☕ 🍪 ❤️ 🎂 etc.
+
+Replace them with elegant professional SVG icons from Lucide, Heroicons or Phosphor Icons.
+
+The website should look like a premium luxury brand, not a playful app.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2. LOYALTY PAGE REDESIGN
+
+The current Loyalty section looks empty and unbalanced.
+
+Do NOT leave large empty spaces.
+
+Redesign this section into a balanced premium layout.
+
+Requirements:
+
+• Increase content width.
+
+• Center the entire section.
+
+• Reduce unnecessary white space.
+
+• Make the Rewards Card larger.
+
+• Improve typography hierarchy.
+
+• Add premium background decorations.
+
+Examples:
+
+soft gradients
+
+glass cards
+
+floating bakery illustrations
+
+subtle particles
+
+warm lighting
+
+premium divider lines
+
+gold accents
+
+The section should occupy the screen beautifully.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3. ADD MORE CONTENT
+
+Instead of only 3 small feature cards,
+
+add more premium content.
+
+Examples:
+
+Benefits
+
+Membership Levels
+
+Exclusive Offers
+
+Birthday Rewards
+
+Early Access
+
+Monthly Specials
+
+Reward Progress
+
+Points History
+
+Recent Rewards
+
+How It Works
+
+FAQs
+
+Premium Testimonials
+
+Every section should feel complete.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4. BETTER BACKGROUND
+
+The plain white background looks boring.
+
+Without making the page noisy,
+
+add subtle premium backgrounds.
+
+Examples:
+
+Soft bakery texture
+
+Cream gradient
+
+Very light pattern
+
+Elegant grain
+
+Warm radial lighting
+
+Glassmorphism
+
+Soft shadows
+
+Luxury beige palette
+
+The background should add depth while keeping readability.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5. OWNER DASHBOARD
+
+The Owner Dashboard currently feels plain.
+
+Redesign ONLY the dashboard.
+
+Do NOT redesign the entire website.
+
+Create a premium admin experience.
+
+Dashboard Background:
+
+Use a luxury dark theme.
+
+Dark Brown
+
+Espresso
+
+Coffee Black
+
+Warm Wood
+
+Gold accents
+
+Glassmorphism cards
+
+Soft gradients
+
+Sidebar should look premium.
+
+Analytics cards should have beautiful charts.
+
+Orders table should look modern.
+
+Products grid should be premium.
+
+Add beautiful dashboard widgets.
+
+Revenue
+
+Orders
+
+Customers
+
+Top Products
+
+Low Stock
+
+Sales Graph
+
+Recent Orders
+
+Notifications
+
+Everything should feel like Shopify Admin or Stripe Dashboard.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6. GLOBAL POLISH
+
+Improve spacing everywhere.
+
+Improve alignment.
+
+Improve typography.
+
+Improve visual hierarchy.
+
+Improve responsiveness.
+
+Every page should feel full and professionally designed.
+
+No page should feel empty.
+
+Every section should have a clear visual purpose.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT
+
+Do NOT remove existing functionality.
+
+Do NOT break any working feature.
+
+Only improve the visual quality, layout balance, spacing, and premium feel while keeping the current luxury bakery design language.
