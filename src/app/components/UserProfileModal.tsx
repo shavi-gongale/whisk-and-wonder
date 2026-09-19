@@ -15,11 +15,12 @@ import { useProductStore } from "../contexts/ProductStoreContext";
 import type { Product } from "../data/products";
 import type { SavedAddress, SavedCard } from "../contexts/AuthContext";
 import type { OrderStatus } from "../contexts/OrderContext";
+import { resolveImage } from "../../lib/image";
 
 const C = { crema:"#FAF6F0", oats:"#F2EBE0", apricot:"#FFBC8A", peach:"#F4956A", cocoa:"#4A3728", hazelnut:"#7A5C3A", shortbread:"#E0CEB4", mint:"#9DD4B8", lilac:"#C9B4E8" };
 const sans  = "'Poppins', system-ui, sans-serif";
 const serif = "'Playfair Display', Georgia, serif";
-const imgUrl = (id: string) => `https://images.unsplash.com/photo-${id}?w=56&h=56&fit=crop&auto=format&q=80`;
+const imgUrl = (id: string) => resolveImage(id, 56, 56, 80);
 
 type Tab = "profile"|"addresses"|"cards"|"orders"|"notifications"|"wishlist";
 

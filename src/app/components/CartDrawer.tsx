@@ -2,11 +2,12 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, ShoppingCart, Trash2, Plus, Minus, ChevronRight } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 import { useToast } from "../contexts/ToastContext";
+import { resolveImage } from "../../lib/image";
 
 const C = { crema:"#FAF6F0", oats:"#F2EBE0", apricot:"#FFBC8A", peach:"#F4956A", cocoa:"#4A3728", hazelnut:"#7A5C3A", shortbread:"#E0CEB4", mint:"#9DD4B8" };
 const sans  = "'Poppins', system-ui, sans-serif";
 const serif = "'Playfair Display', Georgia, serif";
-const img = (id: string) => `https://images.unsplash.com/photo-${id}?w=120&h=120&fit=crop&auto=format&q=80`;
+const img = (id: string) => resolveImage(id, 120, 120, 80);
 
 interface Props { open: boolean; onClose: () => void; dark: boolean; onCheckout: () => void; }
 

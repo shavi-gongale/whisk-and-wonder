@@ -8,7 +8,9 @@ const router = Router();
 router.post('/validate', async (req, res) => {
   try {
     const { code, total } = req.body;
+    const orderTotal = Number(total);
     if (!code) return res.status(400).json({ error: 'Code required' });
+    if (!Number.isFinite(orderTotal) || orderTotal < 0) return res.status(400).json({ error: 'Valid order total required' });
     const result = await pool.query(
       `SELECT * FROM coupons WHERE code = $1 AND is_active = true
        AND (expires_at IS NULL OR expires_at > NOW())
@@ -17,12 +19,13 @@ router.post('/validate', async (req, res) => {
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Invalid or expired coupon' });
     const coupon = result.rows[0];
-    if (coupon.min_order && total < coupon.min_order) {
+    if (coupon.min_order && orderTotal < Number(coupon.min_order)) {
       return res.status(400).json({ error: `Minimum order of ₹${coupon.min_order} required` });
     }
-    const discount = coupon.type === 'percent'
-      ? Math.round(total * coupon.value / 100)
-      : Math.min(coupon.value, total);
+    let discount = coupon.type === 'percent'
+      ? Math.round(orderTotal * Number(coupon.value) / 100)
+      : Math.min(Number(coupon.value), orderTotal);
+    if (coupon.max_discount) discount = Math.min(discount, Number(coupon.max_discount));
     res.json({ valid: true, discount, code: coupon.code, description: coupon.description });
   } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
 });

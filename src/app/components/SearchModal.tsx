@@ -5,11 +5,12 @@ import { type Product } from "../data/products";
 import { useProductStore } from "../contexts/ProductStoreContext";
 import { useCart } from "../contexts/CartContext";
 import { useToast } from "../contexts/ToastContext";
+import { resolveImage } from "../../lib/image";
 
 const C = { crema:"#FAF6F0", oats:"#F2EBE0", apricot:"#FFBC8A", peach:"#F4956A", cocoa:"#4A3728", hazelnut:"#7A5C3A", shortbread:"#E0CEB4", mint:"#9DD4B8", lilac:"#C9B4E8" };
 const sans  = "'Poppins', system-ui, sans-serif";
 const serif = "'Playfair Display', Georgia, serif";
-const img = (id: string) => `https://images.unsplash.com/photo-${id}?w=80&h=80&fit=crop&auto=format&q=80`;
+const img = (id: string) => resolveImage(id, 80, 80, 80);
 
 const ALL_CATEGORIES = [
   "Birthday Cakes","Wedding Cakes","Chocolate Cakes","Strawberry Cakes",

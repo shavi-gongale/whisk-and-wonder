@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.SESSION_SECRET || 'ww_dev_secret_change_in_prod';
+const JWT_SECRET = process.env.SESSION_SECRET;
+
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  throw new Error('SESSION_SECRET must be configured and at least 32 characters long');
+}
 
 export function verifyToken(req, res, next) {
   const header = req.headers['authorization'];
@@ -23,9 +27,17 @@ export function optionalToken(req, _res, next) {
   next();
 }
 
-export function requireOwner(req, res, next) {
-  if (!req.user?.isOwner) return res.status(403).json({ error: 'Owner access required' });
-  next();
+export async function requireOwner(req, res, next) {
+  try {
+    const { default: pool } = await import('../db.js');
+    const result = await pool.query('SELECT is_owner FROM users WHERE id = $1', [req.user?.id]);
+    if (!result.rows[0]?.is_owner) return res.status(403).json({ error: 'Owner access required' });
+    req.user.isOwner = true;
+    next();
+  } catch (err) {
+    console.error('Owner authorization failed:', err);
+    res.status(500).json({ error: 'Authorization check failed' });
+  }
 }
 
 export function signToken(payload) {

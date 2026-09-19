@@ -23,15 +23,12 @@ import { useCoupons } from "../contexts/CouponsContext";
 import { useReviews } from "../contexts/ReviewsContext";
 import type { Product } from "../data/products";
 import type { OrderStatus } from "../contexts/OrderContext";
+import { resolveImage } from "../../lib/image";
 
 const C = { crema:"#FAF6F0", oats:"#F2EBE0", apricot:"#FFBC8A", peach:"#F4956A", cocoa:"#4A3728", hazelnut:"#7A5C3A", shortbread:"#E0CEB4", mint:"#9DD4B8", lilac:"#C9B4E8" };
 const sans  = "'Poppins', system-ui, sans-serif";
 const serif = "'Playfair Display', Georgia, serif";
-const img   = (id: string, w=80, h=80) => {
-  if (!id) return '';
-  if (id.startsWith('data:') || id.startsWith('http') || id.startsWith('/')) return id;
-  return `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&auto=format&q=80`;
-};
+const img = (id: string, w=80, h=80) => resolveImage(id, w, h, 80);
 
 const ALL_STATUSES: OrderStatus[] = ["Order Confirmed","Preparing","Baking","Decorating","Packaging","Out For Delivery","Delivered"];
 const ALL_CATEGORIES = ["Birthday Cakes","Wedding Cakes","Chocolate Cakes","Strawberry Cakes","Cheesecakes","Cupcakes","Donuts","Cookies","Croissants","Macarons","Coffee","Tea","Bread","Pastries","Seasonal Specials","Gift Boxes","Brownies","Tarts","Muffins"];

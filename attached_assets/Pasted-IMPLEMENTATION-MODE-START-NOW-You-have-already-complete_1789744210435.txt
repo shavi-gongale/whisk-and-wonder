@@ -1,0 +1,727 @@
+IMPLEMENTATION MODE — START NOW.
+
+You have already completed the full audit of the Whisk & Wonder Bakery project.
+
+Now I want you to IMPLEMENT EVERYTHING THAT IS CURRENTLY PARTIALLY COMPLETED OR NOT IMPLEMENTED.
+
+Do NOT stop at creating UI mockups.
+Do NOT leave features as simulated/local-only if the audit says they need backend persistence.
+
+IMPORTANT:
+Preserve the existing premium Whisk & Wonder visual design, layout, animations, Cake Studio design, product cards, checkout design, and Owner Dashboard design wherever they already work.
+
+Do not unnecessarily rebuild working components.
+
+Use the EXISTING architecture:
+- React + Vite frontend
+- Express backend
+- PostgreSQL database
+
+Do NOT migrate to Supabase unless absolutely necessary.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 1 — FIX EXISTING BUGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+First fix all issues identified in the audit:
+
+- Fix products.updated_at schema mismatch.
+- Fix wishlist /sync route ordering.
+- Fix review field inconsistencies.
+- Fix image URL/data URL/local path handling.
+- Fix API error handling.
+- Fix existing validation issues.
+- Remove broken or unreliable optimistic behavior where necessary.
+- Ensure existing APIs work correctly.
+
+Run the application and test these fixes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 2 — DATABASE & PERSISTENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make the existing application truly database-driven.
+
+Use PostgreSQL.
+
+Implement/fix persistent data for:
+
+- Users
+- User profiles
+- Products
+- Categories
+- Orders
+- Order items
+- Addresses
+- Reviews
+- Wishlist
+- Coupons
+- Contact messages
+- Newsletter subscribers
+- Delivery zones
+- Admin settings
+
+Add any additional tables required for:
+
+- Cake Studio
+- Loyalty
+- Notifications
+- Payments
+- Inventory
+- Image metadata
+
+Use proper relationships, indexes, constraints and timestamps.
+
+Do not rely on localStorage as the source of truth for authenticated user data.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 3 — PRODUCTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Take the existing bakery products from:
+
+src/app/data/products.ts
+
+and seed them into PostgreSQL.
+
+Then make PostgreSQL the authoritative product source.
+
+Implement:
+
+- Product listing
+- Product details
+- Categories
+- Search
+- Filters
+- Sorting
+- Product availability
+- Stock
+- Add product
+- Edit product
+- Delete/hide product
+- Restore/show product
+
+Make Owner Dashboard changes persist after page refresh.
+
+Fix all frontend/backend field mismatches.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 4 — AUTHENTICATION & OWNER SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Complete authentication.
+
+Implement:
+
+- Customer signup
+- Customer login
+- Logout
+- JWT/session handling
+- Protected customer data
+- Forgot password
+- Password reset
+- Email verification where supported
+- Secure owner account provisioning
+- Separate owner authorization
+- Protected owner routes
+- Backend RBAC
+- Owner-only APIs
+- Rate limiting
+- Authentication throttling
+
+Remove any hardcoded/default JWT secret.
+
+Do not expose secrets in frontend code.
+
+Do not use client-side state as the only protection for Owner Dashboard.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 5 — WISHLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make wishlist production-ready.
+
+Implement:
+
+- Add/remove wishlist
+- Persistent database storage
+- Wishlist page/drawer
+- Guest wishlist
+- Logged-in wishlist
+- Guest → account synchronization
+- Sync conflict handling
+- Remove from wishlist
+- Add wishlist item to cart
+
+Wishlist must survive page refresh and login.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 6 — REVIEWS & RATINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Complete the review system.
+
+Implement:
+
+- Submit review
+- Star rating
+- Review text
+- Database persistence
+- Display reviews
+- Rating aggregates
+- Helpful votes
+- Owner replies
+- Hide/unhide reviews
+- Review deletion
+- Proper validation
+- Purchase verification where possible
+
+Fix the existing mismatch between:
+
+hidden / isHidden
+
+verified / isVerified
+
+ownerReply object / string
+
+Make homepage reviews come from the database instead of hardcoded data.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 7 — COUPONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make coupons secure and database-driven.
+
+Implement:
+
+- Coupon creation
+- Edit coupon
+- Activate/deactivate
+- Percentage discount
+- Flat discount
+- Minimum order
+- Expiration
+- Maximum usage
+- Usage tracking
+- Coupon history
+- Secure redemption
+
+IMPORTANT:
+
+Never trust client-supplied subtotal, discount or total.
+
+Calculate and validate the discount on the server.
+
+Coupon redemption must be transactional and protected against duplicate/concurrent use.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 8 — CHECKOUT & ORDERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make checkout production-ready.
+
+Implement:
+
+- Guest checkout
+- Customer checkout
+- Address validation
+- Delivery zone validation
+- Delivery fee calculation
+- GST/tax calculation
+- Server-side subtotal
+- Server-side product price verification
+- Server-side total calculation
+- Stock validation
+- Stock reservation/decrement
+- Transaction-safe order creation
+- Order items
+- Order notes
+- Coupon validation
+- Payment method
+- Order confirmation
+- Order history
+
+Never trust prices or totals received from the browser.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 9 — PAYMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Integrate a real payment gateway suitable for the current project.
+
+Prefer Razorpay for the Indian bakery use case unless the existing project has a stronger reason to use another provider.
+
+Implement:
+
+- Payment order creation
+- Payment initiation
+- Payment success
+- Payment failure
+- Server-side payment verification
+- Webhooks
+- Duplicate payment/order protection
+- Payment records
+- Refund handling where supported
+- Payment/order status synchronization
+
+Never expose secret payment keys in frontend code.
+
+If credentials are required, create the required environment variable placeholders and clearly tell me which variables I need to provide.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 10 — OWNER DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Connect the existing Owner Dashboard to the real backend.
+
+Implement:
+
+Products:
+- Add
+- Edit
+- Delete
+- Hide/show
+- Stock
+- Price
+- Categories
+- Multiple images
+
+Orders:
+- View
+- Filter
+- Search
+- Update status
+- Customer information
+- Payment status
+- Order details
+
+Customers:
+- Customer list
+- Customer details
+- Order history
+
+Reviews:
+- View
+- Hide/show
+- Reply
+- Delete
+
+Coupons:
+- Create
+- Edit
+- Delete
+- Activate/deactivate
+- Usage statistics
+
+Analytics:
+- Revenue
+- Orders
+- Customers
+- Products
+- Reviews
+- Sales charts
+- Date filtering
+
+Settings:
+- Store open/close
+- Delivery settings
+- Store configuration
+
+All changes must persist in PostgreSQL.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 11 — IMAGE STORAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Replace production use of data URLs.
+
+Implement proper persistent image storage.
+
+The system must support:
+
+- Product images
+- Multiple product images
+- Image replacement
+- Image deletion
+- Cake Studio reference images
+
+Use a suitable storage architecture compatible with the existing Express/PostgreSQL project.
+
+Create ONE shared image resolver and make every relevant component use it:
+
+- ProductModal
+- CartDrawer
+- CheckoutFlow
+- SearchModal
+- Wishlist
+- OrderTracking
+- Today's Special
+- Admin Dashboard
+- Cake Studio
+
+Do not manually prepend Unsplash URLs to arbitrary image values.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 12 — CAKE STUDIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Preserve the current Cake Studio UI and visual design.
+
+Do NOT convert it into a childish or cartoonish interface.
+
+Make it production-functional.
+
+Implement:
+
+- Occasion
+- Shape
+- Weight
+- Size
+- Flavor
+- Sponge
+- Filling/cream
+- Frosting
+- Layers
+- Decorations
+- Greeting message
+- Dynamic pricing
+- Visual preview
+- Reference image upload
+- Save design
+- Persistent saved configurations
+- Customer ownership
+- Custom cake order database record
+- Custom cake checkout metadata
+- Owner custom-order queue
+- Owner status management
+- Customer communication/notes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 13 — CUSTOMER PROFILE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Complete customer account functionality.
+
+Implement:
+
+- Profile
+- Edit profile
+- Saved addresses
+- Default address
+- Wishlist
+- Order history
+- Order details
+- Reorder
+- Active order tracking
+- Notifications
+- Loyalty points
+- Saved designs
+
+Data must persist in the database.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 14 — ORDER TRACKING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Complete order tracking.
+
+Implement:
+
+- Order status
+- Tracking timeline
+- Customer order status updates
+- Owner status updates
+- Backend synchronization
+- Appropriate polling or real-time mechanism where useful
+
+Do not claim real-time functionality unless it actually works.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 15 — LOYALTY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Turn the current loyalty UI into a functional system.
+
+Implement:
+
+- Membership tiers
+- Tier progress
+- Points earning
+- Points redemption
+- Points ledger/history
+- Rewards
+- Birthday rewards
+- Monthly rewards
+- Exclusive offers
+- Recent rewards
+- FAQs
+- Customer stories
+- Persistent loyalty database
+- Secure server-side point calculations
+
+Do not trust client-side points values.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 16 — NOTIFICATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement backend-backed notifications.
+
+Create:
+
+- Notification database table
+- Notification API
+- Read/unread state
+- Mark one read
+- Mark all read
+- Clear notifications
+- Notification preferences
+
+Generate notifications for:
+
+- Order placed
+- Order status changed
+- Payment status
+- Owner review reply
+- Loyalty rewards
+- Promotions where applicable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 17 — HOMEPAGE COMPLETION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Preserve the existing homepage design.
+
+Complete missing sections/features:
+
+- Chef recommendations
+- Instagram feed section
+- Store locations
+- FAQ
+- Database-driven testimonials
+- Database-driven gallery
+- Database-driven bakery story
+- Database-driven delivery zones
+- Dedicated loyalty page
+- Proper footer links
+- Privacy page
+- Terms page
+- 404 page
+- Error pages
+
+Remove unnecessary hardcoded business data where database-driven content is appropriate.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 18 — RESPONSIVENESS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fix all responsive issues identified in the audit.
+
+Test:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+- Small mobile
+- Short-height mobile
+
+Pay special attention to:
+
+- Cake Studio fixed 408px column
+- Loyalty 360×220 card
+- Loyalty 3-column grid
+- Contact form columns
+- Today's Special spacing
+- Hero 100vh clipping
+- Sound widget overlap
+- Admin dashboard overflow
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 19 — PERFORMANCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Improve:
+
+- Bundle size
+- Code splitting
+- Lazy loading
+- Dynamic imports
+- Image optimization
+- Responsive images
+- Caching
+- Loading states
+- Skeletons
+- API error states
+- Error boundaries
+- Failed optimistic update rollback
+
+Address the current large JavaScript bundle warning.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 20 — SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fix all security issues identified during the audit.
+
+At minimum:
+
+- Remove hardcoded JWT fallback secret
+- Restrict CORS
+- Restrict Vite allowed hosts
+- Add rate limiting
+- Add schema validation
+- Add authentication throttling
+- Secure password reset
+- Add email verification
+- Enforce ownership checks
+- Enforce hidden product rules
+- Validate order totals server-side
+- Prevent coupon abuse
+- Prevent review abuse
+- Add authorization middleware
+- Add secure error handling
+- Ensure production database TLS configuration is secure
+
+Never expose secrets in frontend code.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 21 — SEO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement:
+
+- Page titles
+- Meta descriptions
+- Canonical URLs
+- Open Graph
+- Twitter cards
+- Favicon
+- Sitemap
+- Robots metadata
+- Bakery/local business JSON-LD
+- Product structured data
+- Route-specific SEO
+- Crawlable product pages
+- Privacy/Terms links
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 22 — ACCESSIBILITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Implement:
+
+- Accessible labels
+- aria-expanded
+- aria-controls
+- aria-pressed
+- Dialog roles
+- Focus trapping
+- Focus restoration
+- Escape-key handling
+- Keyboard navigation
+- Semantic buttons/links
+- Proper label/input associations
+- Accessible validation errors
+- Heading hierarchy
+- Reduced-motion support
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 23 — FINAL CLEANUP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After all functionality is implemented:
+
+- Remove unused imports
+- Remove dead code
+- Remove unnecessary console.logs
+- Remove unused components
+- Remove unused packages
+- Remove duplicate code
+- Remove unnecessary Replit-specific development files ONLY if they are no longer required by the current environment
+- Do NOT delete important project files without verifying dependencies
+
+Do not delete:
+src/
+public/
+server/
+package.json
+package-lock.json
+or any required production assets.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHASE 24 — TEST EVERYTHING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After implementation, test the complete application.
+
+Verify:
+
+1. npm install
+2. npm run build
+3. Frontend starts
+4. Backend starts
+5. Database connection
+6. Signup
+7. Login
+8. Logout
+9. Owner authentication
+10. Product CRUD
+11. Search/filter
+12. Cart
+13. Wishlist
+14. Coupon
+15. Checkout
+16. Payment
+17. Order creation
+18. Order history
+19. Order tracking
+20. Reviews
+21. Addresses
+22. Cake Studio
+23. Loyalty
+24. Notifications
+25. Admin dashboard
+26. Mobile responsiveness
+27. Error handling
+28. Security checks
+
+Fix errors you encounter instead of simply reporting them.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IMPORTANT DEVELOPMENT RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Preserve working UI.
+2. Do not unnecessarily redesign the website.
+3. Do not replace the existing architecture without a technical reason.
+4. PostgreSQL should be the source of truth for persistent data.
+5. Never trust client-side prices, discounts, points, stock or totals.
+6. Never expose secrets.
+7. Never leave a feature pretending to be functional when it is only a mock.
+8. If an external service requires credentials, create environment variable placeholders and clearly tell me what I need to configure.
+9. Keep the existing luxury bakery aesthetic.
+10. Do not use childish/cartoon-style UI.
+11. Do not add unnecessary emojis to the interface.
+12. Use professional SVG icons where icons are required.
+13. Maintain responsive behavior.
+14. Keep components maintainable.
+15. Test every major feature after implementation.
+
+START IMPLEMENTATION NOW.
+
+Work through the phases systematically.
+After each major phase, run the relevant tests and fix errors before continuing.
+
+At the end provide a FINAL REPORT containing:
+
+- Features completed
+- Features still incomplete
+- Database tables created
+- API endpoints created/modified
+- Packages installed
+- Environment variables required
+- Security fixes
+- Build/test result
+- Remaining issues, if any
+- Final estimated completion percentage
