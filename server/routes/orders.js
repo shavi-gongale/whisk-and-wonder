@@ -10,7 +10,7 @@ const ALL_STATUSES = [
 
 // POST /api/orders — create order (auth optional; guest orders use user_id = null)
 router.post('/', optionalToken, async (req, res) => {
-  const client = await pool.connect();
+  let client;
   try {
     const { items, address, paymentMethod, couponCode, notes, estimatedDelivery } = req.body;
     if (!Array.isArray(items) || items.length === 0 || items.length > 100) {
@@ -20,6 +20,7 @@ router.post('/', optionalToken, async (req, res) => {
     const safePaymentMethods = new Set(['cod', 'card', 'upi', 'netbanking']);
     if (!safePaymentMethods.has(paymentMethod)) return res.status(400).json({ error: 'Unsupported payment method' });
     const userId = req.user?.id || null;
+    client = await pool.connect();
     await client.query('BEGIN');
     const canonicalItems = [];
     let subtotal = 0;
@@ -105,11 +106,11 @@ router.post('/', optionalToken, async (req, res) => {
     await client.query('COMMIT');
     res.status(201).json(mapOrder(result.rows[0]));
   } catch (err) {
-    await client.query('ROLLBACK');
+    if (client) await client.query('ROLLBACK');
     console.error(err);
     res.status(err.status || 500).json({ error: err.status ? err.message : 'Server error' });
   } finally {
-    client.release();
+    client?.release();
   }
 });
 

@@ -49,7 +49,6 @@ interface OrderCtx {
   refreshOrders: () => Promise<void>;
 }
 
-const STORAGE_KEY = "ww_orders_v2";
 const TOKEN_KEY   = "ww_token";
 
 const ALL_STEPS: OrderStatus[] = [
@@ -60,20 +59,10 @@ function buildInitialTrackingSteps(now: string): TrackingStep[] {
   return ALL_STEPS.map((step, i) => i === 0 ? { step, completedAt: now } : { step });
 }
 
-function load(): Order[] {
-  try { const r = localStorage.getItem(STORAGE_KEY); return r ? JSON.parse(r) : []; } catch { return []; }
-}
-
-function save(orders: Order[]) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(orders)); } catch {}
-}
-
 const Ctx = createContext<OrderCtx | null>(null);
 
 export function OrderProvider({ children }: { children: React.ReactNode }) {
-  const [orders, setOrders] = useState<Order[]>(load);
-
-  useEffect(() => { save(orders); }, [orders]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   // Fetch orders from backend when we have a token
   const refreshOrders = useCallback(async () => {
@@ -81,13 +70,8 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
     try {
       const remote = await ordersApi.getAll();
       const mapped = remote as unknown as Order[];
-      setOrders(prev => {
-        // Merge: remote entries win; local-only entries (no numeric id) stay
-        const remoteIds = new Set(mapped.map(o => o.id));
-        const localOnly = prev.filter(o => !remoteIds.has(o.id));
-        return [...mapped, ...localOnly];
-      });
-    } catch { /* keep local */ }
+        setOrders(mapped);
+    } catch { setOrders([]); }
   }, []);
 
   // Sync on mount if token is present
@@ -114,7 +98,7 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
           const s = saved as unknown as Order;
           setOrders(prev => prev.map(x => x.id === tempId ? { ...order, id: s.id } : x));
         })
-        .catch(() => { /* keep local */ });
+        .catch(() => setOrders(prev => prev.filter(x => x.id !== tempId)));
 
       return order;
     },

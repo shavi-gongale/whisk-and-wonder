@@ -37,6 +37,7 @@ import { OrderTrackingModal } from "./components/OrderTrackingModal";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 import type { Product } from "./data/products";
+import { resolveImage } from "../lib/image";
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
 const C = {
@@ -46,11 +47,7 @@ const C = {
 };
 const serif = "'Playfair Display', Georgia, serif";
 const sans  = "'Poppins', system-ui, sans-serif";
-const img   = (id: string, w = 400, h = 400) => {
-  if (!id) return '';
-  if (id.startsWith('data:') || id.startsWith('http') || id.startsWith('/')) return id;
-  return `https://images.unsplash.com/photo-${id}?w=${w}&h=${h}&fit=crop&auto=format&q=85`;
-};
+const img = resolveImage;
 
 type Stage = "loading" | "entrance" | "main";
 
