@@ -77,6 +77,15 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  useEffect(() => {
+    if (!p) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [p?.id]);
+
   if (!p) return null;
 
   const liked    = has(p.id);
@@ -211,7 +220,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
             {/* Sticky close */}
             <button onClick={onClose}
               style={{
-                position:"sticky",top:12,float:"right",marginRight:14,
+                 position:"absolute",top:12,right:14,
                 background:dark?"rgba(0,0,0,0.5)":"rgba(255,255,255,0.8)",
                 backdropFilter:"blur(8px)",border:`1px solid ${border}`,
                 borderRadius:"50%",width:36,height:36,

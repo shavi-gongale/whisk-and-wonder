@@ -636,7 +636,14 @@ function ProductCard({ p, dark, onOpen }: { p: Product; dark:boolean; onOpen:()=
   };
 
   return (
-    <div style={{ width:"min(300px, 100%)", perspective:1200 }} onClick={onOpen}>
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${p.name}`}
+      style={{ width:"min(300px, 100%)", perspective:1200 }}
+      onClick={onOpen}
+      onKeyDown={e=>{ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+    >
       <motion.div initial={{ opacity:0, y:32 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
         whileHover={{ boxShadow:`0 36px 80px rgba(0,0,0,${dark?0.48:0.16})`, y:-8 }}
         style={{ rotateX:springRX, rotateY:springRY, background:dark?"#3A2A1E":C.crema, borderRadius:28, overflow:"hidden", border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}`, boxShadow:`0 8px 32px rgba(0,0,0,${dark?0.28:0.07})`, cursor:"pointer", transformStyle:"preserve-3d", display:"flex", flexDirection:"column" }}
@@ -645,7 +652,8 @@ function ProductCard({ p, dark, onOpen }: { p: Product; dark:boolean; onOpen:()=
         <div style={{ position:"relative", overflow:"hidden", height:220, flexShrink:0, borderRadius:"28px 28px 0 0" }}>
           <motion.img src={img(p.imgId,480,360)} alt={p.name}
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
-            whileHover={{ scale:1.07 }} transition={{ duration:0.55 }} loading="lazy" />
+            whileHover={{ scale:1.07 }} transition={{ duration:0.55 }} loading="lazy"
+            onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} />
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.04) 40%,transparent 70%)", pointerEvents:"none" }} />
           <div style={{ position:"absolute", top:14, left:14 }}>
             <span style={{ background:C.hazelnut, color:C.crema, fontFamily:sans, fontSize:"0.58rem", fontWeight:700, letterSpacing:"0.14em", padding:"4px 12px", borderRadius:100 }}>{p.tag}</span>
@@ -1213,12 +1221,16 @@ function BestSellers({ dark, onProduct }: { dark:boolean; onProduct:(p:Product)=
       <div ref={ref} className="scrollbar-hide"
         style={{ display:"flex", gap:18, overflowX:"auto", paddingLeft:"max(24px,calc((100vw - 1440px) / 2 + 24px))", paddingRight:24, paddingBottom:6 }}>
         {sellers.map((s,i)=>(
-          <motion.div key={s.id}
+           <motion.div key={s.id}
             initial={{ opacity:0, x:30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
             transition={{ delay:i*0.07 }} whileHover={{ y:-8, boxShadow:`0 30px 64px rgba(0,0,0,${dark?0.42:0.14})` }}
-            onClick={()=>onProduct(s)} style={{ flexShrink:0, width:252, borderRadius:24, overflow:"hidden", background:dark?"#3A2A1E":C.oats, border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}`, boxShadow:`0 4px 24px rgba(0,0,0,${dark?0.22:0.05})`, cursor:"pointer" }}>
+             role="button" tabIndex={0} aria-label={`View details for ${s.name}`}
+             onClick={()=>onProduct(s)}
+             onKeyDown={e=>{ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onProduct(s); } }}
+             style={{ flexShrink:0, width:252, borderRadius:24, overflow:"hidden", background:dark?"#3A2A1E":C.oats, border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}`, boxShadow:`0 4px 24px rgba(0,0,0,${dark?0.22:0.05})`, cursor:"pointer" }}>
             <div style={{ height:188, overflow:"hidden", position:"relative" }}>
-              <motion.img src={img(s.imgId,320,240)} alt={s.name} className="w-full h-full object-cover" whileHover={{ scale:1.07 }} transition={{ duration:0.48 }} loading="lazy" />
+               <motion.img src={img(s.imgId,320,240)} alt={s.name} className="w-full h-full object-cover" whileHover={{ scale:1.07 }} transition={{ duration:0.48 }} loading="lazy"
+                 onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} />
               <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(0,0,0,0.2) 0%,transparent 50%)" }} />
             </div>
             <div style={{ padding:"18px 20px 22px" }}>
@@ -1228,7 +1240,7 @@ function BestSellers({ dark, onProduct }: { dark:boolean; onProduct:(p:Product)=
               <h3 style={{ fontFamily:serif, fontSize:"0.95rem", fontWeight:700, color:dark?C.crema:C.cocoa, marginBottom:10, lineHeight:1.32 }}>{s.name}</h3>
               <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                 <span style={{ fontFamily:serif, fontSize:"1.14rem", fontWeight:700, color:dark?C.apricot:C.peach }}>₹{s.price}</span>
-                <motion.button whileHover={{ x:3 }} style={{ fontFamily:sans, fontSize:"0.7rem", fontWeight:600, color:dark?C.apricot:C.hazelnut, background:"none", border:"none", cursor:"pointer", display:"flex", alignItems:"center", gap:4 }}>
+                 <motion.button onClick={e=>{ e.stopPropagation(); onProduct(s); }} whileHover={{ x:3 }} style={{ fontFamily:sans, fontSize:"0.7rem", fontWeight:600, color:dark?C.apricot:C.hazelnut, background:"none", border:"none", cursor:"pointer", display:"flex", alignItems:"center", gap:4 }}>
                   View <ChevronRight size={12}/>
                 </motion.button>
               </div>
@@ -1974,7 +1986,7 @@ function AppRoot() {
 
   const { count: cartCount }     = useCart();
   const { count: wishCount }     = useWishlist();
-  const { user, logout }         = useAuth();
+  const { user, isLoading: authLoading, logout } = useAuth();
   const { toast }                = useToast();
   const { unreadCount }          = useNotifications();
 
@@ -1983,6 +1995,41 @@ function AppRoot() {
     if (dark) document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
   },[dark]);
+
+  useEffect(() => {
+    const overlayOpen = cartOpen || authOpen || searchOpen || checkoutOpen || wishOpen ||
+      adminOpen || profileOpen || Boolean(trackingOrderId) || Boolean(activeProduct);
+    if (!overlayOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [cartOpen, authOpen, searchOpen, checkoutOpen, wishOpen, adminOpen, profileOpen, trackingOrderId, activeProduct]);
+
+  useEffect(() => {
+    if (stage !== "main" || authLoading || window.location.pathname !== "/owner") return;
+    if (user?.isOwner) {
+      setAdminOpen(true);
+      return;
+    }
+    if (user) {
+      toast("Owner access is required for this area.", "error");
+      window.history.replaceState({}, "", "/");
+      return;
+    }
+    setAuthOpen(true);
+  }, [stage, authLoading, user, toast]);
+
+  const closeAuth = () => {
+    setAuthOpen(false);
+    if (!user && window.location.pathname === "/owner") window.history.replaceState({}, "", "/");
+  };
+
+  const openOwnerConsole = () => {
+    window.history.pushState({}, "", "/owner");
+    setAdminOpen(true);
+  };
 
   const handleLogout = () => {
     logout();
@@ -2006,7 +2053,7 @@ function AppRoot() {
             onWishlist={()=>setWishOpen(true)}
             onAuth={()=>setAuthOpen(true)}
             onLogout={handleLogout}
-            onAdmin={()=>setAdminOpen(true)}
+            onAdmin={openOwnerConsole}
             onProfile={()=>setProfileOpen(true)}
           />
           <HeroSection dark={dark}
@@ -2036,11 +2083,14 @@ function AppRoot() {
           <ToastContainer/>
           <CartDrawer open={cartOpen} onClose={()=>setCartOpen(false)} dark={dark} onCheckout={()=>setCheckoutOpen(true)}/>
           <WishlistDrawer open={wishOpen} onClose={()=>setWishOpen(false)} dark={dark} onProduct={p=>{setActiveProduct(p);}}/>
-          <AuthModal open={authOpen} onClose={()=>setAuthOpen(false)} dark={dark}/>
+           <AuthModal open={authOpen} onClose={closeAuth} dark={dark}/>
           <SearchModal open={searchOpen} onClose={()=>setSearchOpen(false)} dark={dark} onProduct={p=>{setActiveProduct(p);setSearchOpen(false);}}/>
           <ProductModal product={activeProduct} onClose={()=>setActiveProduct(null)} dark={dark} onProduct={p=>setActiveProduct(p)}/>
           <CheckoutFlow open={checkoutOpen} onClose={()=>setCheckoutOpen(false)} dark={dark} onOrderTrack={(id)=>setTrackingOrderId(id)}/>
-          <AdminDashboard open={adminOpen} onClose={()=>setAdminOpen(false)} dark={dark}/>
+           <AdminDashboard open={adminOpen} onClose={()=>{
+             setAdminOpen(false);
+             if (window.location.pathname === "/owner") window.history.replaceState({}, "", "/");
+           }} dark={dark}/>
           <UserProfileModal open={profileOpen} onClose={()=>setProfileOpen(false)} dark={dark} onOrderTrack={(id)=>{ setProfileOpen(false); setTrackingOrderId(id); }} onProduct={p=>setActiveProduct(p)}/>
           <OrderTrackingModal orderId={trackingOrderId} onClose={()=>setTrackingOrderId(null)} dark={dark}/>
         </motion.div>

@@ -1,0 +1,100 @@
+The current owner setup is not the final implementation I want.
+
+I do NOT want the owner account to require manually running:
+
+UPDATE users SET is_owner = true ...
+
+The owner account must be provisioned securely through the application/backend configuration.
+
+Implement a proper owner provisioning system.
+
+Requirements:
+
+1. Add secure environment variables in Replit Secrets:
+
+OWNER_EMAIL
+OWNER_PASSWORD
+OWNER_NAME
+
+2. Create a server-side owner provisioning mechanism.
+
+If the owner account does not exist:
+- Create it automatically/provision it securely.
+- Hash OWNER_PASSWORD with bcrypt.
+- Set is_owner = true.
+- Set the owner name/email.
+- Never expose OWNER_PASSWORD to the frontend.
+- Never store the plain-text password in the database.
+
+If the owner account already exists:
+- Do NOT create duplicates.
+- Keep the existing owner account.
+- Handle startup/provisioning idempotently.
+
+3. Add/keep a command such as:
+
+npm run provision:owner
+
+This should safely create/update the configured owner account.
+
+4. Do NOT allow public signup to set is_owner=true.
+
+Every normal signup must create:
+
+is_owner = false
+
+5. Owner authorization must ALWAYS be checked server-side using the database.
+
+Do not trust only a frontend flag.
+Do not allow users to modify is_owner through profile APIs.
+Do not accept is_owner from request bodies.
+
+6. Owner login should use the same secure authentication system.
+
+After successful login:
+- /api/auth/me should return the authenticated user's owner status.
+- The frontend should show "Owner Console" only when the backend confirms owner access.
+
+7. Protect ALL owner APIs with proper server-side owner middleware.
+
+8. Create a proper /owner route for the Owner Dashboard.
+
+Unauthenticated users:
+→ redirect to login
+
+Authenticated customer:
+→ deny access / redirect to customer area
+
+Authenticated owner:
+→ allow Owner Dashboard
+
+9. Do not expose owner credentials anywhere in:
+- frontend JavaScript
+- HTML
+- API responses
+- logs
+- Git repository
+- source code
+
+10. Add clear Replit setup instructions for the required Secrets.
+
+11. Test the complete flow:
+
+Fresh database:
+→ set Replit Secrets
+→ run owner provisioning
+→ owner row created
+→ login from website
+→ Owner Console appears
+→ /owner opens dashboard
+→ owner APIs work
+
+Normal customer:
+→ signup
+→ is_owner=false
+→ Owner Console does NOT appear
+→ /owner is denied
+
+12. Keep the existing premium Whisk & Wonder UI.
+
+Actually implement this in the project. Do not just explain how to do it.

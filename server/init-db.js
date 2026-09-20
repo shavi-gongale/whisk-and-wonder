@@ -1,5 +1,6 @@
 import pool from './db.js';
 import { seedDatabase } from './seed.js';
+import { provisionConfiguredOwner } from './owner.js';
 
 export async function initDb() {
   await pool.query(`
@@ -328,4 +329,5 @@ export async function initDb() {
   `);
   console.log('✅ Database tables initialised');
   await seedDatabase();
+  await provisionConfiguredOwner();
 }

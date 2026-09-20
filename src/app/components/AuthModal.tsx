@@ -80,7 +80,10 @@ export function AuthModal({ open, onClose, dark }: Props) {
     setError("");
     if (!name || !email || !password) { setError("Please fill in all fields."); return; }
     if (password !== confirm) { setError("Passwords do not match."); return; }
-    if (password.length < 8) { setError("Password must be at least 8 characters."); return; }
+    if (password.length < 10 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password)) {
+      setError("Password must be at least 10 characters with upper, lower, and numeric characters.");
+      return;
+    }
     try { await signup(name, email, password); toast("Account created! Welcome to Whisk & Wonder 🥐", "success"); onClose(); }
     catch (e: any) { setError(e.message); }
   };
@@ -181,11 +184,6 @@ export function AuthModal({ open, onClose, dark }: Props) {
                 {tab === "login" && (
                   <motion.div key="login" initial={{ opacity:0, x:-12 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:12 }} transition={{ duration:0.22 }}>
                     <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-                      <div style={{ padding:"10px 14px", borderRadius:10, background:`${C.mint}18`, border:`1px solid ${C.mint}33` }}>
-                        <p style={{ fontFamily:sans, fontSize:"0.68rem", color:dark?C.mint:"#1A4A34", lineHeight:1.5 }}>
-                          Demo: <strong>demo@whiskandwonder.com</strong> / <strong>demo1234</strong>
-                        </p>
-                      </div>
                       <Field label="Email" type="email" value={email} onChange={setEmail} icon={<Mail size={14}/>} placeholder="your@email.com" dark={dark} />
                       <Field label="Password" type="password" value={password} onChange={setPassword} icon={<Lock size={14}/>} placeholder="Your password" dark={dark} showToggle />
                       <button onClick={() => switchTab("forgot")} style={{ fontFamily:sans, fontSize:"0.72rem", color:C.hazelnut, background:"none", border:"none", cursor:"pointer", textAlign:"right", textDecoration:"underline", padding:0 }}>
