@@ -7,6 +7,8 @@ export interface OrderItem {
   imgId: string;
   price: number;
   quantity: number;
+  qty?: number;
+  category?: string;
   size?: string;
 }
 
@@ -34,17 +36,20 @@ export interface Order {
   date: string;
   status: OrderStatus;
   statusUpdatedAt: string;
-  address: string;
+  address: string | { name?: string; phone?: string; email?: string; line1: string; line2?: string; city: string; state: string; pincode: string; lat?: number; lng?: number };
   paymentMethod: string;
   trackingSteps: TrackingStep[];
   estimatedDelivery: string;
   couponCode?: string;
   notes?: string;
+  orderNum?: string;
+  paymentStatus?: string;
+  customer?: { name: string; email: string; phone?: string };
 }
 
 interface OrderCtx {
   orders: Order[];
-  addOrder: (o: Omit<Order, "id" | "date" | "status" | "statusUpdatedAt" | "trackingSteps">) => Order;
+  addOrder: (o: Omit<Order, "id" | "date" | "status" | "statusUpdatedAt" | "trackingSteps">) => Promise<Order>;
   updateOrderStatus: (id: string, status: OrderStatus) => void;
   refreshOrders: () => Promise<void>;
 }
@@ -77,33 +82,14 @@ export function OrderProvider({ children }: { children: React.ReactNode }) {
   // Sync on mount if token is present
   useEffect(() => { refreshOrders(); }, []); // eslint-disable-line
 
-  const addOrder = useCallback(
-    (o: Omit<Order, "id" | "date" | "status" | "statusUpdatedAt" | "trackingSteps">): Order => {
-      const now = new Date().toISOString();
-      const tempId = `ord_${Date.now()}`;
-      const order: Order = {
-        ...o,
-        id: tempId,
-        date: now,
-        status: "Order Confirmed",
-        statusUpdatedAt: now,
-        trackingSteps: buildInitialTrackingSteps(now),
-      };
-      // Add locally immediately (optimistic)
-      setOrders(prev => [order, ...prev]);
-
-      // Persist to backend (fire-and-forget, replace temp id when done)
-      ordersApi.create(o as Parameters<typeof ordersApi.create>[0])
-        .then(saved => {
-          const s = saved as unknown as Order;
-          setOrders(prev => prev.map(x => x.id === tempId ? { ...order, id: s.id } : x));
-        })
-        .catch(() => setOrders(prev => prev.filter(x => x.id !== tempId)));
-
-      return order;
-    },
-    [],
-  );
+  const addOrder = useCallback(async (
+    o: Omit<Order, "id" | "date" | "status" | "statusUpdatedAt" | "trackingSteps">,
+  ): Promise<Order> => {
+    const saved = await ordersApi.create(o as Parameters<typeof ordersApi.create>[0]);
+    const order = saved as unknown as Order;
+    setOrders(prev => [order, ...prev.filter(existing => existing.id !== order.id)]);
+    return order;
+  }, []);
 
   const updateOrderStatus = useCallback((id: string, status: OrderStatus) => {
     const now = new Date().toISOString();

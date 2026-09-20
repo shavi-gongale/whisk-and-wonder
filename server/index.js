@@ -11,13 +11,57 @@ import newsletterRouter from './routes/newsletter.js';
 import contactRouter from './routes/contact.js';
 import wishlistRouter from './routes/wishlist.js';
 import couponsRouter from './routes/coupons.js';
+import notificationsRouter from './routes/notifications.js';
+import loyaltyRouter from './routes/loyalty.js';
+import cakeStudioRouter from './routes/cakeStudio.js';
+import paymentsRouter from './routes/payments.js';
+import adminRouter from './routes/admin.js';
+import deliveryRouter from './routes/delivery.js';
 import { verifyToken, requireOwner } from './middleware/auth.js';
 
 const app = express();
 const PORT = process.env.API_PORT || 3001;
 
-app.use(cors({ origin: true, credentials: true }));
-app.use(express.json({ limit: '5mb' }));
+const allowedOrigins = new Set([
+  'http://localhost:5000',
+  'http://127.0.0.1:5000',
+  ...(process.env.REPLIT_DEV_DOMAIN ? [`https://${process.env.REPLIT_DEV_DOMAIN}`] : []),
+  ...(process.env.REPLIT_DOMAINS?.split(',').map(value => `https://${value.trim()}`).filter(Boolean) || []),
+]);
+const requestWindows = new Map();
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    return callback(new Error('Origin not allowed'));
+  },
+  credentials: true,
+}));
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+  next();
+});
+app.use((req, res, next) => {
+  const key = `${req.ip}:${req.path}`;
+  const now = Date.now();
+  const windowMs = 60_000;
+  const current = requestWindows.get(key);
+  if (!current || now - current.startedAt > windowMs) {
+    requestWindows.set(key, { startedAt: now, count: 1 });
+  } else {
+    current.count += 1;
+    if (current.count > (req.path.startsWith('/api/auth') ? 30 : 180)) {
+      return res.status(429).json({ error: 'Too many requests. Please try again shortly.' });
+    }
+  }
+  if (requestWindows.size > 5000) {
+    for (const [entry, value] of requestWindows) if (now - value.startedAt > windowMs) requestWindows.delete(entry);
+  }
+  next();
+});
+app.use(express.json({ limit: '1mb' }));
 
 app.use('/api/auth',       authRouter);
 app.use('/api/products',   productsRouter);
@@ -28,9 +72,21 @@ app.use('/api/newsletter', newsletterRouter);
 app.use('/api/contact',    contactRouter);
 app.use('/api/wishlist',   wishlistRouter);
 app.use('/api/coupons',    couponsRouter);
+app.use('/api/notifications', notificationsRouter);
+app.use('/api/loyalty', loyaltyRouter);
+app.use('/api/cake-studio', cakeStudioRouter);
+app.use('/api/payments', paymentsRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/delivery', deliveryRouter);
 
 // Health check
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+
+app.use((err, _req, res, _next) => {
+  if (err?.message === 'Origin not allowed') return res.status(403).json({ error: 'Origin not allowed' });
+  console.error('Unhandled API error:', err);
+  res.status(500).json({ error: 'Unexpected server error' });
+});
 
 // Analytics snapshot for owner dashboard — owner only
 app.get('/api/analytics', verifyToken, requireOwner, async (req, res) => {

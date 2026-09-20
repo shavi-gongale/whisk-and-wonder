@@ -11,6 +11,7 @@ import { useSound } from "../contexts/SoundContext";
 import { useOrders } from "../contexts/OrderContext";
 import { useCoupons } from "../contexts/CouponsContext";
 import { useNotifications } from "../contexts/NotificationsContext";
+import { deliveryApi, paymentApi } from "../../lib/api";
 import { AddressMapPicker } from "./AddressMapPicker";
 import type { SavedAddress } from "../contexts/AuthContext";
 import { resolveImage } from "../../lib/image";
@@ -71,6 +72,7 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
   const [saveNewAddr, setSaveNewAddr] = useState(false);
   const [mapAddr, setMapAddr] = useState<{ line1:string; line2:string; city:string; postcode:string; country:string; lat?:number; lng?:number }>({ line1:"", line2:"", city:"", postcode:"", country:"India" });
   const [delivery, setDelivery] = useState("standard");
+  const [deliveryOptions, setDeliveryOptions] = useState(DELIVERY_OPTIONS);
   const [couponCode, setCouponCode] = useState("");
   const [couponResult, setCouponResult] = useState<{ valid:boolean; discount:number; message:string } | null>(null);
   const [payMethod, setPayMethod] = useState<PayMethod>("cod");
@@ -90,7 +92,24 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
     }
   }, [open]);
 
-  const deliveryOpt = DELIVERY_OPTIONS.find(d=>d.id===delivery)!;
+  useEffect(() => {
+    const pincode = (addingNewAddr ? newAddr.pincode : getDeliveryAddress()?.pincode) || "";
+    if (!/^\d{6}$/.test(pincode)) return;
+    deliveryApi.zones(pincode)
+      .then(zones => {
+        const mapped = zones.map(zone => {
+          const fallback = DELIVERY_OPTIONS.find(option => option.id === zone.optionKey) || DELIVERY_OPTIONS[0];
+          return { ...fallback, id: zone.optionKey, price: zone.fee, desc: zone.estimatedTime };
+        });
+        if (mapped.length) {
+          setDeliveryOptions(mapped as typeof DELIVERY_OPTIONS);
+          if (!mapped.some(option => option.id === delivery)) setDelivery(mapped[0].id);
+        }
+      })
+      .catch(() => {});
+  }, [addingNewAddr, newAddr.pincode, selectedAddrId, addresses]);
+
+  const deliveryOpt = deliveryOptions.find(d=>d.id===delivery) || deliveryOptions[0];
   const subtotal = total;
   const discount = couponResult?.valid ? couponResult.discount : 0;
   const deliveryFee = deliveryOpt.price;
@@ -142,9 +161,11 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
 
     const savedAddr = getDeliveryAddress();
     const addr = savedAddr ? {
+      name: savedAddr.name, phone: savedAddr.phone, email: contact.email,
       line1: savedAddr.line1, line2: savedAddr.line2, city: savedAddr.city,
       state: savedAddr.state, pincode: savedAddr.pincode, lat: savedAddr.lat, lng: savedAddr.lng,
     } : {
+      name: newAddr.name || contact.name, phone: newAddr.phone || contact.phone, email: contact.email,
       line1: newAddr.line1, line2: newAddr.line2, city: newAddr.city,
       state: newAddr.state, pincode: newAddr.pincode, lat: newAddr.lat, lng: newAddr.lng,
     };
@@ -152,12 +173,21 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
     if (!addr.line1 || !addr.city) { toast("Delivery address is required","error"); return; }
 
     setSubmitting(true);
-    await new Promise(r=>setTimeout(r,1400));
-    setSubmitting(false);
-
-    if (saveNewCard && payMethod === "card" && !selectedCardId) {
-      addCard({ last4: newCard.last4, brand: newCard.brand as any, expiry: newCard.expiry, name: newCard.name });
+    if (payMethod !== "cod") {
+      try {
+        const paymentConfig = await paymentApi.config();
+        if (!paymentConfig.configured) {
+          toast("Online payments are not available yet. Please choose Cash on Delivery.", "error");
+          setSubmitting(false);
+          return;
+        }
+      } catch (error) {
+        toast(error instanceof Error ? error.message : "Unable to check payment availability", "error");
+        setSubmitting(false);
+        return;
+      }
     }
+
     if (saveNewAddr && addingNewAddr && newAddr.line1) {
       addAddress({ label: newAddr.label, name: newAddr.name, phone: newAddr.phone, line1: newAddr.line1, line2: newAddr.line2, city: newAddr.city, state: newAddr.state, pincode: newAddr.pincode, isDefault: false, lat: newAddr.lat, lng: newAddr.lng });
     }
@@ -165,10 +195,9 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
     const estDate = new Date();
     estDate.setDate(estDate.getDate() + (delivery === "sameday" ? 0 : delivery === "express" ? 1 : 4));
     const estimatedDelivery = estDate.toLocaleDateString("en-IN", { weekday:"short", day:"numeric", month:"short" });
-    const orderNum = `WW-${Date.now().toString().slice(-6)}`;
-
-    const created = addOrder({
-      orderNum,
+    let created: any;
+    try {
+      created = await addOrder({
       customer: { name: contact.name, email: contact.email, phone: contact.phone },
       items,
       subtotal,
@@ -176,11 +205,68 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
       deliveryFee,
       total: grandTotal,
       address: addr,
-      paymentMethod: getPaymentLabel(),
+      paymentMethod: payMethod,
       estimatedDelivery,
       couponCode: couponResult?.valid ? couponCode : undefined,
       notes: notes || undefined,
-    });
+      });
+    } catch (error) {
+      setSubmitting(false);
+      toast(error instanceof Error ? error.message : "Unable to place this order", "error");
+      return;
+    }
+
+    const orderNum = created.orderNum || `WW-${String(created.id).padStart(6, "0")}`;
+
+    if (payMethod !== "cod") {
+      try {
+        const providerOrder = await paymentApi.createOrder(created.id, grandTotal);
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://checkout.razorpay.com/v1/checkout.js";
+          script.async = true;
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error("Unable to load Razorpay checkout"));
+          document.body.appendChild(script);
+        });
+        await new Promise<void>((resolve, reject) => {
+          const Razorpay = (window as any).Razorpay;
+          if (!Razorpay) return reject(new Error("Razorpay checkout is unavailable"));
+          const checkout = new Razorpay({
+            key: providerOrder.keyId,
+            amount: providerOrder.amount,
+            currency: providerOrder.currency,
+            name: "Whisk & Wonder",
+            description: `Order ${orderNum}`,
+            order_id: providerOrder.id,
+            prefill: { name: contact.name, email: contact.email, contact: contact.phone },
+            handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+              try {
+                await paymentApi.verify({
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpaySignature: response.razorpay_signature,
+                });
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            },
+            modal: { ondismiss: () => reject(new Error("Payment was cancelled")) },
+          });
+          checkout.open();
+        });
+      } catch (error) {
+        setSubmitting(false);
+        toast(error instanceof Error ? error.message : "Payment was not completed", "error");
+        return;
+      }
+    }
+
+    if (saveNewCard && payMethod === "card" && !selectedCardId) {
+      addCard({ last4: newCard.last4, brand: newCard.brand as any, expiry: newCard.expiry, name: newCard.name });
+    }
+    setSubmitting(false);
 
     setCreatedOrderId(created.id);
 
@@ -189,7 +275,7 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
       title: "Order Confirmed! 🎉",
       message: `Your order ${orderNum} has been placed. Estimated delivery: ${estimatedDelivery}`,
       icon: "🥐",
-      orderId: created.id,
+       orderId: created.id,
     });
 
     clear();
@@ -365,7 +451,7 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
                 {step === "delivery" && (
                   <motion.div key="delivery" initial={{opacity:0,x:-16}} animate={{opacity:1,x:0}} exit={{opacity:0,x:16}} transition={{duration:0.22}}>
                     <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-                      {DELIVERY_OPTIONS.map(opt => (
+                      {deliveryOptions.map(opt => (
                         <button key={opt.id} onClick={()=>setDelivery(opt.id)}
                           style={{ display:"flex", alignItems:"center", gap:14, padding:"16px 18px", borderRadius:16, background:delivery===opt.id?dark?"rgba(122,92,58,0.18)":C.oats:"transparent", border:`1.5px solid ${delivery===opt.id?C.hazelnut:border}`, cursor:"pointer", textAlign:"left", transition:"all 0.18s" }}>
                           <div style={{ width:40, height:40, borderRadius:"50%", background:delivery===opt.id?`${C.hazelnut}22`:fBg, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>

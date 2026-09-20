@@ -11,7 +11,7 @@ export function verifyToken(req, res, next) {
   if (!header) return res.status(401).json({ error: 'No token provided' });
   const token = header.startsWith('Bearer ') ? header.slice(7) : header;
   try {
-    req.user = jwt.verify(token, JWT_SECRET);
+    req.user = jwt.verify(token, JWT_SECRET, { issuer: 'whisk-wonder-api', audience: 'whisk-wonder-web' });
     next();
   } catch {
     return res.status(401).json({ error: 'Invalid or expired token' });
@@ -22,7 +22,7 @@ export function optionalToken(req, _res, next) {
   const header = req.headers['authorization'];
   if (header) {
     const token = header.startsWith('Bearer ') ? header.slice(7) : header;
-    try { req.user = jwt.verify(token, JWT_SECRET); } catch { /* ignore */ }
+    try { req.user = jwt.verify(token, JWT_SECRET, { issuer: 'whisk-wonder-api', audience: 'whisk-wonder-web' }); } catch { /* ignore */ }
   }
   next();
 }
@@ -41,5 +41,5 @@ export async function requireOwner(req, res, next) {
 }
 
 export function signToken(payload) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d', issuer: 'whisk-wonder-api', audience: 'whisk-wonder-web' });
 }

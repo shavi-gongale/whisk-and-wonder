@@ -1,0 +1,1 @@
+- [Database migration constraints](database-migration-constraints.md) — legacy columns and exact unique-index inference must be handled before seed upserts.

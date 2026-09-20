@@ -38,6 +38,11 @@ export const authApi = {
     api.post<{ user: AuthUser; token: string }>('/auth/login', { email, password }),
   forgotPassword: (email: string) =>
     api.post<{ message: string }>('/auth/forgot-password', { email }),
+  resetPassword: (token: string, password: string) =>
+    api.post<{ message: string }>('/auth/reset-password', { token, password }),
+  verifyEmail: (token: string) =>
+    api.post<{ message: string }>('/auth/verify-email', { token }),
+  logout: () => api.post<{ success: boolean }>('/auth/logout'),
   me:             () => api.get<{ user: AuthUser }>('/auth/me'),
 };
 
@@ -48,6 +53,7 @@ export const productsApi = {
     return api.get<Product[]>(`/products${qs}`);
   },
   getById:  (id: string) => api.get<Product>(`/products/${id}`),
+  getManage: () => api.get<Product[]>('/products/manage/all'),
   create:   (p: Partial<Product>) => api.post<Product>('/products', p),
   update:   (id: string, patch: Partial<Product>) => api.patch<Product>(`/products/${id}`, patch),
   remove:   (id: string) => api.delete<{ success: boolean }>(`/products/${id}`),
@@ -68,6 +74,11 @@ export const usersApi = {
   addAddress:     (a: Partial<SavedAddress>) => api.post<SavedAddress>('/users/addresses', a),
   updateAddress:  (id: string, patch: Partial<SavedAddress>) => api.patch<SavedAddress>(`/users/addresses/${id}`, patch),
   deleteAddress:  (id: string) => api.delete<{ success: boolean }>(`/users/addresses/${id}`),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    api.post<{ success: boolean }>('/users/change-password', { currentPassword, newPassword }),
+  getPaymentMethods: () => api.get<SavedPaymentMethod[]>('/users/payment-methods'),
+  addPaymentMethod: (method: Omit<SavedPaymentMethod, 'id'>) => api.post<SavedPaymentMethod>('/users/payment-methods', method),
+  deletePaymentMethod: (id: string) => api.delete<{ success: boolean }>(`/users/payment-methods/${id}`),
 };
 
 // ── Reviews ───────────────────────────────────────────────────────────────────
@@ -80,7 +91,8 @@ export const reviewsApi = {
     api.post<Review>('/reviews', r),
   markHelpful:(id: string) => api.post<{ likes: number }>(`/reviews/${id}/helpful`),
   ownerPatch: (id: string, patch: { ownerReply?: string; isHidden?: boolean }) =>
-    api.patch<{ success: boolean }>(`/reviews/${id}`, patch),
+    api.patch<Review>(`/reviews/${id}`, patch),
+  remove: (id: string) => api.delete<{ success: boolean }>(`/reviews/${id}`),
 };
 
 // ── Newsletter ────────────────────────────────────────────────────────────────
@@ -104,10 +116,53 @@ export const wishlistApi = {
 
 // ── Coupons ───────────────────────────────────────────────────────────────────
 export const couponsApi = {
+  available: () => api.get<CouponRecord[]>('/coupons/available'),
   validate: (code: string, total: number) =>
     api.post<{ valid: boolean; discount: number; code: string; description: string }>('/coupons/validate', { code, total }),
-  use:      (code: string) => api.post<{ success: boolean }>('/coupons/use', { code }),
+  list: () => api.get<CouponRecord[]>('/coupons'),
+  create: (coupon: Partial<CouponRecord>) => api.post<CouponRecord>('/coupons', coupon),
+  update: (id: string, patch: Partial<CouponRecord>) => api.patch<CouponRecord>(`/coupons/${id}`, patch),
+  remove: (id: string) => api.delete<{ success: boolean }>(`/coupons/${id}`),
 };
+
+export const notificationsApi = {
+  list: () => api.get<NotificationRecord[]>('/notifications'),
+  markRead: (id: string) => api.patch<NotificationRecord>(`/notifications/${id}/read`),
+  markAllRead: () => api.post<{ success: boolean }>('/notifications/read-all'),
+  remove: (id: string) => api.delete<{ success: boolean }>(`/notifications/${id}`),
+};
+
+export const loyaltyApi = {
+  get: () => api.get<{ points: number; transactions: LoyaltyTransaction[] }>('/loyalty'),
+  redeem: (points: number) => api.post<{ points: number }>('/loyalty/redeem', { points }),
+};
+
+export const cakeStudioApi = {
+  listDesigns: () => api.get<CakeDesign[]>('/cake-studio/designs'),
+  createDesign: (data: { name: string; configuration: unknown; referenceImageUrl?: string }) =>
+    api.post<CakeDesign>('/cake-studio/designs', data),
+  updateDesign: (id: string, data: Partial<CakeDesign>) => api.patch<CakeDesign>(`/cake-studio/designs/${id}`, data),
+  deleteDesign: (id: string) => api.delete<{ success: boolean }>(`/cake-studio/designs/${id}`),
+};
+
+export const paymentApi = {
+  config: () => api.get<{ provider: string; configured: boolean; keyId: string | null }>('/payments/config'),
+  createOrder: (orderId: string, amount: number) => api.post<{ id: string; amount: number; currency: string; keyId: string }>('/payments/create-order', { orderId, amount }),
+  verify: (payload: { razorpayOrderId: string; razorpayPaymentId: string; razorpaySignature: string }) => api.post<{ success: boolean }>('/payments/verify', payload),
+};
+
+export const deliveryApi = {
+  zones: (pincode?: string) => api.get<DeliveryZone[]>(`/delivery/zones${pincode ? `?pincode=${encodeURIComponent(pincode)}` : ''}`),
+};
+
+export interface CouponRecord {
+  id?: string; code: string; type?: 'percent'|'flat'; value?: number; discount?: number; description: string;
+  minOrder: number; maxDiscount?: number; maxUses?: number; usesCount?: number; expiresAt?: string; active?: boolean; isActive?: boolean;
+}
+export interface NotificationRecord { id: string; type: string; title: string; message: string; data?: Record<string, unknown>; date: string; isRead: boolean; }
+export interface LoyaltyTransaction { id: string; points: number; type: string; description: string; order_id?: string; created_at: string; }
+export interface CakeDesign { id: string; name: string; configuration: unknown; referenceImageUrl?: string; createdAt: string; updatedAt: string; }
+export interface DeliveryZone { id: string; name: string; optionKey: string; fee: number; minOrder: number; estimatedTime: string; }
 
 // ── Analytics ─────────────────────────────────────────────────────────────────
 export const analyticsApi = {
@@ -118,12 +173,15 @@ export const analyticsApi = {
 export interface AuthUser {
   id: string; name: string; email: string; initials: string;
   memberSince: string; points: number; orders: number;
-  isOwner?: boolean; phone?: string; avatar?: string;
+  isOwner?: boolean; phone?: string; avatar?: string; emailVerified?: boolean;
 }
 export interface SavedAddress {
   id: string; label: 'Home'|'Work'|'Other'; name: string; phone: string;
   line1: string; line2?: string; city: string; state: string; pincode: string;
   isDefault: boolean; lat?: number; lng?: number;
+}
+export interface SavedPaymentMethod {
+  id: string; provider?: string; last4: string; brand: 'Visa'|'Mastercard'|'RuPay'|'AmEx'; expiry: string; name: string;
 }
 export interface Product {
   id: string; name: string; desc: string; longDesc: string;
@@ -143,9 +201,10 @@ export interface Order {
   statusUpdatedAt: string; address: string; paymentMethod: string;
   trackingSteps: { step: string; completedAt?: string }[];
   estimatedDelivery: string; couponCode?: string; notes?: string;
+  paymentStatus?: string; orderNum?: string; customer?: { name: string; email: string; phone?: string };
 }
 export interface OrderItem {
-  id: string; name: string; imgId: string; price: number; quantity: number; size?: string;
+  id: string; productId?: number; name: string; imgId: string; price: number; quantity: number; qty?: number; size?: string; category?: string;
 }
 export interface Review {
   id: string; userId: string; userName: string; userInitials: string;

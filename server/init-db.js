@@ -16,6 +16,13 @@ export async function initDb() {
       is_owner BOOLEAN DEFAULT false,
       phone VARCHAR(50),
       avatar TEXT,
+      email_verified BOOLEAN DEFAULT false,
+      email_verification_token_hash TEXT,
+      email_verification_expires_at TIMESTAMP,
+      reset_token_hash TEXT,
+      reset_token_expires_at TIMESTAMP,
+      failed_login_attempts INTEGER DEFAULT 0,
+      locked_until TIMESTAMP,
       created_at TIMESTAMP DEFAULT NOW()
     );
 
@@ -71,6 +78,7 @@ export async function initDb() {
       notes TEXT,
       estimated_delivery VARCHAR(255),
       tracking_steps JSONB DEFAULT '[]',
+      payment_status VARCHAR(50) DEFAULT 'pending',
       created_at TIMESTAMP DEFAULT NOW()
     );
 
@@ -88,6 +96,18 @@ export async function initDb() {
       is_default BOOLEAN DEFAULT false,
       lat DECIMAL(10,6),
       lng DECIMAL(10,6),
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
+    CREATE TABLE IF NOT EXISTS saved_payment_methods (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      provider VARCHAR(50) NOT NULL DEFAULT 'razorpay',
+      provider_token TEXT,
+      last4 VARCHAR(4) NOT NULL,
+      brand VARCHAR(30) NOT NULL,
+      expiry VARCHAR(10) NOT NULL,
+      name VARCHAR(255) NOT NULL,
       created_at TIMESTAMP DEFAULT NOW()
     );
 
@@ -176,6 +196,8 @@ export async function initDb() {
     CREATE TABLE IF NOT EXISTS delivery_zones (
       id SERIAL PRIMARY KEY,
       name VARCHAR(255) UNIQUE NOT NULL,
+      pincode_prefixes JSONB DEFAULT '[]',
+      option_key VARCHAR(50) DEFAULT 'standard',
       fee DECIMAL(10,2) NOT NULL DEFAULT 0 CHECK (fee >= 0),
       min_order DECIMAL(10,2) DEFAULT 0 CHECK (min_order >= 0),
       estimated_time VARCHAR(100),
@@ -250,6 +272,24 @@ export async function initDb() {
       updated_at TIMESTAMP DEFAULT NOW()
     );
 
+    CREATE TABLE IF NOT EXISTS coupon_redemptions (
+      id SERIAL PRIMARY KEY,
+      coupon_id INTEGER NOT NULL REFERENCES coupons(id) ON DELETE CASCADE,
+      user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+      order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      created_at TIMESTAMP DEFAULT NOW(),
+      UNIQUE(coupon_id, user_id),
+      UNIQUE(coupon_id, order_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS order_events (
+      id SERIAL PRIMARY KEY,
+      order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+      status VARCHAR(100) NOT NULL,
+      note TEXT DEFAULT '',
+      created_at TIMESTAMP DEFAULT NOW()
+    );
+
     CREATE TABLE IF NOT EXISTS inventory_movements (
       id SERIAL PRIMARY KEY,
       product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
@@ -265,8 +305,26 @@ export async function initDb() {
     CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
     CREATE INDEX IF NOT EXISTS idx_reviews_product_visible ON reviews(product_id, is_hidden);
     CREATE INDEX IF NOT EXISTS idx_notifications_user_created ON notifications(user_id, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_notifications_owner_created ON notifications(user_id, created_at DESC)
+      WHERE user_id IS NULL;
+    CREATE INDEX IF NOT EXISTS idx_coupon_redemptions_user ON coupon_redemptions(coupon_id, user_id);
+    CREATE INDEX IF NOT EXISTS idx_order_events_order ON order_events(order_id, created_at);
     CREATE UNIQUE INDEX IF NOT EXISTS idx_payments_provider_order ON payments(provider, provider_order_id)
       WHERE provider_order_id IS NOT NULL;
+
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS source_id VARCHAR(100);
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_token_hash TEXT;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMP;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token_hash TEXT;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token_expires_at TIMESTAMP;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_login_attempts INTEGER DEFAULT 0;
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until TIMESTAMP;
+    ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'pending';
+    ALTER TABLE delivery_zones ADD COLUMN IF NOT EXISTS pincode_prefixes JSONB DEFAULT '[]';
+    ALTER TABLE delivery_zones ADD COLUMN IF NOT EXISTS option_key VARCHAR(50) DEFAULT 'standard';
+    DROP INDEX IF EXISTS idx_users_source_id;
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_users_source_id ON users(source_id);
   `);
   console.log('✅ Database tables initialised');
   await seedDatabase();

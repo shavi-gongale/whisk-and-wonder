@@ -4,6 +4,15 @@ import { verifyToken, requireOwner } from '../middleware/auth.js';
 
 const router = Router();
 
+function productIdParam(value) {
+  return typeof value === 'string' && (value.length <= 100) ? value : null;
+}
+
+async function resolveProductId(value) {
+  const result = await pool.query('SELECT id FROM products WHERE id::text = $1 OR source_id = $1', [String(value)]);
+  return result.rows[0]?.id || null;
+}
+
 // GET /api/products — public
 router.get('/', async (req, res) => {
   try {
@@ -13,11 +22,28 @@ router.get('/', async (req, res) => {
     if (category && category !== 'All') { params.push(category); query += ` AND category = $${params.length}`; }
     if (search) { params.push(`%${search}%`); query += ` AND (name ILIKE $${params.length} OR description ILIKE $${params.length})`; }
     query += ` ORDER BY is_featured DESC, is_best_seller DESC, created_at DESC`;
-    if (limit) { params.push(parseInt(limit)); query += ` LIMIT $${params.length}`; }
-    if (offset) { params.push(parseInt(offset)); query += ` OFFSET $${params.length}`; }
+    if (limit) {
+      const parsedLimit = Math.min(Math.max(Number.parseInt(limit, 10) || 0, 1), 100);
+      params.push(parsedLimit); query += ` LIMIT $${params.length}`;
+    }
+    if (offset) {
+      const parsedOffset = Math.max(Number.parseInt(offset, 10) || 0, 0);
+      params.push(parsedOffset); query += ` OFFSET $${params.length}`;
+    }
     const result = await pool.query(query, params);
     res.json(result.rows.map(mapProduct));
   } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
+});
+
+// Owner catalog view includes hidden products so restore/show works after refresh.
+router.get('/manage/all', verifyToken, requireOwner, async (_req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM products ORDER BY created_at DESC');
+    res.json(result.rows.map(mapProduct));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to load products' });
+  }
 });
 
 // GET /api/products/:id — public
@@ -58,6 +84,7 @@ router.post('/', verifyToken, requireOwner, async (req, res) => {
 router.patch('/:id', verifyToken, requireOwner, async (req, res) => {
   try {
     const { id } = req.params;
+    if (!productIdParam(id)) return res.status(400).json({ error: 'Invalid product ID' });
     const p = req.body;
     const validation = validateProduct(p, true);
     if (validation) return res.status(400).json({ error: validation });
@@ -82,7 +109,9 @@ router.patch('/:id', verifyToken, requireOwner, async (req, res) => {
       }
     }
     if (!fields.length) return res.status(400).json({ error: 'No fields to update' });
-    values.push(id);
+    const numericId = await resolveProductId(id);
+    if (!numericId) return res.status(404).json({ error: 'Product not found' });
+    values.push(numericId);
     const result = await pool.query(
       `UPDATE products SET ${fields.join(', ')}, updated_at = NOW() WHERE id = $${values.length} RETURNING *`,
       values
@@ -95,7 +124,9 @@ router.patch('/:id', verifyToken, requireOwner, async (req, res) => {
 // DELETE /api/products/:id — owner only (soft delete)
 router.delete('/:id', verifyToken, requireOwner, async (req, res) => {
   try {
-    await pool.query('UPDATE products SET is_hidden = true WHERE id = $1', [req.params.id]);
+    const numericId = await resolveProductId(req.params.id);
+    if (!numericId) return res.status(404).json({ error: 'Product not found' });
+    await pool.query('UPDATE products SET is_hidden = true, updated_at = NOW() WHERE id = $1', [numericId]);
     res.json({ success: true });
   } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
 });

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { notificationsApi } from "../../lib/api";
 
 export interface Notification {
   id: string;
@@ -7,7 +8,8 @@ export interface Notification {
   message: string;
   date: string;
   isRead: boolean;
-  icon: string;
+  icon?: string;
+  data?: Record<string, unknown>;
 }
 
 interface NotificationsCtx {
@@ -19,77 +21,23 @@ interface NotificationsCtx {
   clearAll: () => void;
 }
 
-const STORAGE_KEY = "ww_notifications_v1";
-
-const SEED_NOTIFICATIONS: Notification[] = [
-  {
-    id: "n1",
-    type: "promo",
-    title: "Welcome to Whisk & Wonder! 🎉",
-    message: "Use code WELCOME10 for 10% off your first order. Happy baking adventures await!",
-    date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    isRead: false,
-    icon: "🎊",
-  },
-  {
-    id: "n2",
-    type: "order",
-    title: "Your Order is Out for Delivery!",
-    message: "Your Triple Chocolate Cake (Order #ORD-4821) is on its way. Expected delivery in 30–45 minutes.",
-    date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    isRead: false,
-    icon: "🚚",
-  },
-  {
-    id: "n3",
-    type: "system",
-    title: "New Arrivals: Summer Collection",
-    message: "Fresh mango cheesecakes, coconut lime tarts, and passion fruit donuts are now available. Limited stock!",
-    date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-    isRead: false,
-    icon: "🌟",
-  },
-  {
-    id: "n4",
-    type: "review",
-    title: "Owner Replied to Your Review",
-    message: "Whisk & Wonder replied: \"Thank you so much! We're thrilled you loved the rose & pistachio donuts. See you soon! 💕\"",
-    date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    isRead: true,
-    icon: "💬",
-  },
-  {
-    id: "n5",
-    type: "promo",
-    title: "Festive Season Offer 🪔",
-    message: "Celebrate with FESTIVE50 — get up to ₹800 off on orders above ₹2000. Valid through the festive season only!",
-    date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    isRead: false,
-    icon: "🎁",
-  },
-];
-
-function loadNotifications(): Notification[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : SEED_NOTIFICATIONS;
-  } catch {
-    return SEED_NOTIFICATIONS;
-  }
-}
-
-function saveNotifications(notifications: Notification[]) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
-  } catch { /* ignore */ }
-}
-
 const Ctx = createContext<NotificationsCtx | null>(null);
 
 export function NotificationsProvider({ children }: { children: React.ReactNode }) {
-  const [notifications, setNotifications] = useState<Notification[]>(loadNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  useEffect(() => { saveNotifications(notifications); }, [notifications]);
+  const refresh = useCallback(() => {
+    if (!localStorage.getItem("ww_token")) return;
+    notificationsApi.list()
+      .then(remote => setNotifications(remote as Notification[]))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    refresh();
+    const timer = window.setInterval(refresh, 30_000);
+    return () => window.clearInterval(timer);
+  }, [refresh]);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
@@ -97,27 +45,31 @@ export function NotificationsProvider({ children }: { children: React.ReactNode 
     (n: Omit<Notification, "id" | "date" | "isRead">) => {
       const newNotification: Notification = {
         ...n,
-        id: `notif_${Date.now()}`,
+        id: `local_${Date.now()}`,
         date: new Date().toISOString(),
         isRead: false,
       };
       setNotifications(prev => [newNotification, ...prev]);
+      // Order-created notifications are persisted by the server. This local entry
+      // only keeps the immediate guest-checkout confirmation visible.
     },
     [],
   );
 
   const markRead = useCallback((id: string) => {
-    setNotifications(prev =>
-      prev.map(n => (n.id === id ? { ...n, isRead: true } : n)),
-    );
+    setNotifications(prev => prev.map(n => (n.id === id ? { ...n, isRead: true } : n)));
+    if (!id.startsWith("local_")) notificationsApi.markRead(id).catch(() => {});
   }, []);
 
   const markAllRead = useCallback(() => {
     setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    notificationsApi.markAllRead().catch(() => {});
   }, []);
 
   const clearAll = useCallback(() => {
     setNotifications([]);
+    // Deleting is intentionally per notification on the server; clear the
+    // current view after marking persisted records read.
   }, []);
 
   return (

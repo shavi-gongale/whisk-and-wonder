@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { authApi, usersApi } from "../../lib/api";
+import type { SavedPaymentMethod } from "../../lib/api";
 
 export interface SavedAddress {
   id: string;
@@ -58,24 +59,13 @@ interface AuthCtx {
 }
 
 const TOKEN_KEY  = "ww_token";
-const CARD_KEY   = "ww_cards_v1";
-
-function loadCards(): SavedCard[] {
-  try { const r = localStorage.getItem(CARD_KEY); return r ? JSON.parse(r) : []; } catch { return []; }
-}
-function saveCards(cards: SavedCard[]) {
-  try { localStorage.setItem(CARD_KEY, JSON.stringify(cards)); } catch {}
-}
-
 const Ctx = createContext<AuthCtx | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser]           = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);  // true while restoring session
   const [addresses, setAddresses] = useState<SavedAddress[]>([]);
-  const [savedCards, setSavedCards] = useState<SavedCard[]>(loadCards);
-
-  useEffect(() => { saveCards(savedCards); }, [savedCards]);
+  const [savedCards, setSavedCards] = useState<SavedCard[]>([]);
 
   // ── Restore session from stored JWT ────────────────────────────────────────
   useEffect(() => {
@@ -84,11 +74,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Promise.all([
       authApi.me().catch(() => null),
       usersApi.getAddresses().catch(() => [] as SavedAddress[]),
+      usersApi.getPaymentMethods().catch(() => [] as SavedPaymentMethod[]),
     ])
-      .then(([meRes, addrs]) => {
+      .then(([meRes, addrs, cards]) => {
         if (meRes?.user) {
           setUser(meRes.user as unknown as User);
           setAddresses(addrs as SavedAddress[]);
+          setSavedCards(cards as SavedCard[]);
         } else {
           localStorage.removeItem(TOKEN_KEY);
         }
@@ -107,6 +99,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       usersApi.getAddresses()
         .then(a => setAddresses(a as SavedAddress[]))
         .catch(() => {});
+      usersApi.getPaymentMethods()
+        .then(cards => setSavedCards(cards as SavedCard[]))
+        .catch(() => {});
     } finally {
       setIsLoading(false);
     }
@@ -120,6 +115,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(TOKEN_KEY, token);
       setUser(u as unknown as User);
       setAddresses([]);
+      setSavedCards([]);
     } finally {
       setIsLoading(false);
     }
@@ -130,6 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem(TOKEN_KEY);
     setUser(null);
     setAddresses([]);
+    setSavedCards([]);
   }, []);
 
   // ── Forgot password ────────────────────────────────────────────────────────
@@ -196,13 +193,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .catch(() => {});
   }, []);
 
-  // ── Cards (local only) ─────────────────────────────────────────────────────
+  // ── Tokenized payment method metadata (never store card numbers) ────────────
   const addCard = useCallback((c: Omit<SavedCard, "id">) => {
-    setSavedCards(prev => [...prev, { ...c, id: `card_${Date.now()}` }]);
+    usersApi.addPaymentMethod(c as Parameters<typeof usersApi.addPaymentMethod>[0])
+      .then(saved => setSavedCards(prev => [saved as SavedCard, ...prev]))
+      .catch(() => {});
   }, []);
 
   const removeCard = useCallback((id: string) => {
     setSavedCards(prev => prev.filter(c => c.id !== id));
+    usersApi.deletePaymentMethod(id).catch(() => {});
   }, []);
 
   return (
