@@ -42,10 +42,17 @@ export function OrderTrackingModal({ orderId, onClose, dark }: Props) {
         <>
           <motion.div key="otm-bg" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={onClose}
             style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.55)", backdropFilter:"blur(8px)", zIndex:500 }}/>
+          <div key="otm-wrapper" style={{
+            position:"fixed", inset:0, display:"flex", alignItems:"center", justifyContent:"center",
+            zIndex:501, pointerEvents:"none", padding:"16px", boxSizing:"border-box",
+          }}>
           <motion.div key="otm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Order tracking"
             initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} exit={{opacity:0,y:40}}
             transition={{duration:0.34,ease:[0.16,1,0.3,1]}}
-            style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:"min(680px,96vw)", maxHeight:"90vh", background:bg, borderRadius:24, border:`1px solid ${border}`, boxShadow:"0 30px 80px rgba(0,0,0,0.38)", zIndex:501, display:"flex", flexDirection:"column", overflow:"hidden" }}>
+            style={{ pointerEvents:"all", position:"relative", width:"min(680px,calc(100vw - 32px))", maxHeight:"calc(100dvh - 32px)", background:bg, borderRadius:24, border:`1px solid ${border}`, boxShadow:"0 30px 80px rgba(0,0,0,0.38)", display:"flex", flexDirection:"column", overflow:"hidden" }}>
 
             {/* Header */}
             <div style={{ padding:"20px 24px 16px", borderBottom:`1px solid ${border}`, flexShrink:0 }}>
@@ -54,13 +61,13 @@ export function OrderTrackingModal({ orderId, onClose, dark }: Props) {
                   <h2 style={{ fontFamily:serif, fontSize:"1.3rem", fontWeight:700, color:text, margin:0 }}>Order Tracking</h2>
                   {order && <p style={{ fontFamily:sans, fontSize:"0.72rem", color:sub, marginTop:3 }}>Order #{order.orderNum ?? order.id.slice(-6)}</p>}
                 </div>
-                <button onClick={onClose} style={{ background:"none", border:"none", cursor:"pointer", color:sub, display:"flex", padding:6 }}>
+                 <button onClick={onClose} aria-label="Close order tracking" style={{ background:"none", border:"none", cursor:"pointer", color:sub, display:"flex", padding:6 }}>
                   <X size={20}/>
                 </button>
               </div>
             </div>
 
-            <div style={{ flex:1, overflowY:"auto", padding:"20px 24px 28px" }}>
+             <div style={{ flex:1, minHeight:0, overflowY:"auto", padding:"20px 24px 28px" }}>
               {!order ? (
                 <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"60px 20px", textAlign:"center" }}>
                   <p style={{ fontSize:"3rem", marginBottom:16 }}>📦</p>
@@ -137,7 +144,7 @@ export function OrderTrackingModal({ orderId, onClose, dark }: Props) {
                     <p style={{ fontFamily:sans, fontSize:"0.65rem", fontWeight:700, color:sub, letterSpacing:"0.1em", marginBottom:14 }}>ORDER SUMMARY</p>
                     {order.items.map(item => (
                       <div key={item.id} style={{ display:"flex", gap:12, alignItems:"center", marginBottom:10 }}>
-                        <img src={imgUrl(item.imgId)} alt={item.name} style={{ width:44, height:44, borderRadius:10, objectFit:"cover", flexShrink:0 }}/>
+                        <img src={imgUrl(item.imgId)} alt={item.name} onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} style={{ width:44, height:44, borderRadius:10, objectFit:"cover", flexShrink:0 }}/>
                         <div style={{ flex:1 }}>
                           <p style={{ fontFamily:sans, fontWeight:600, fontSize:"0.8rem", color:text }}>{item.name}</p>
                           <p style={{ fontFamily:sans, fontSize:"0.67rem", color:sub }}>{item.size} × {item.qty}</p>
@@ -192,6 +199,7 @@ export function OrderTrackingModal({ orderId, onClose, dark }: Props) {
               )}
             </div>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

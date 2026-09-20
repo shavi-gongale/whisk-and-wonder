@@ -294,17 +294,24 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
         <>
           <motion.div key="co-bg" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={handleClose}
             style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.55)", backdropFilter:"blur(8px)", zIndex:400 }}/>
+          <div key="co-wrapper" style={{
+            position:"fixed", inset:0, display:"flex", alignItems:"center", justifyContent:"center",
+            zIndex:401, pointerEvents:"none", padding:"16px", boxSizing:"border-box",
+          }}>
           <motion.div key="co-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Checkout"
             initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} exit={{opacity:0,y:40}}
             transition={{duration:0.34,ease:[0.16,1,0.3,1]}}
-            style={{ position:"fixed", bottom:0, left:"50%", transform:"translateX(-50%)", width:"min(680px,100vw)", maxHeight:"92vh", background:bg, borderRadius:"24px 24px 0 0", border:`1px solid ${border}`, boxShadow:"0 -30px 80px rgba(0,0,0,0.38)", zIndex:401, display:"flex", flexDirection:"column", overflow:"hidden" }}>
+            style={{ pointerEvents:"all", position:"relative", width:"min(680px,calc(100vw - 32px))", maxHeight:"calc(100dvh - 32px)", background:bg, borderRadius:24, border:`1px solid ${border}`, boxShadow:"0 30px 80px rgba(0,0,0,0.38)", display:"flex", flexDirection:"column", overflow:"hidden" }}>
 
             {/* Header */}
             {!isSuccess && (
               <div style={{ padding:"20px 28px 0", flexShrink:0 }}>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16 }}>
                   <h2 style={{ fontFamily:serif, fontSize:"1.25rem", fontWeight:700, color:text, margin:0 }}>Checkout</h2>
-                  <button onClick={handleClose} style={{ background:"none", border:"none", cursor:"pointer", color:sub, display:"flex" }}><X size={20}/></button>
+                   <button onClick={handleClose} aria-label="Close checkout" style={{ background:"none", border:"none", cursor:"pointer", color:sub, display:"flex" }}><X size={20}/></button>
                 </div>
                 {/* Step progress */}
                 <div style={{ display:"flex", gap:0, marginBottom:18, overflowX:"auto", scrollbarWidth:"none" }}>
@@ -331,7 +338,7 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
             )}
 
             {/* Content */}
-            <div style={{ flex:1, overflowY:"auto", padding:isSuccess?"0":"18px 28px 22px" }}>
+             <div style={{ flex:1, minHeight:0, overflowY:"auto", padding:isSuccess?"0":"18px 28px 22px" }}>
               <AnimatePresence mode="wait">
 
                 {/* REVIEW */}
@@ -702,6 +709,7 @@ export function CheckoutFlow({ open, onClose, dark, onOrderTrack }: Props) {
               </div>
             )}
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>

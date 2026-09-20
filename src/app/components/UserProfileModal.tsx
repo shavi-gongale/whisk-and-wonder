@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   X, User, MapPin, CreditCard, ShoppingBag, Bell, Heart,
@@ -89,6 +89,20 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
   const [cardForm, setCardForm] = useState<Omit<SavedCard,"id">>({ ...emptyCard });
   const [showCardNum, setShowCardNum] = useState(false);
 
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
   const bg     = dark ? "#1A1008" : C.crema;
   const panel  = dark ? "#221609" : "#fff";
   const text   = dark ? C.crema : C.cocoa;
@@ -141,10 +155,17 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
         <>
           <motion.div key="upm-bg" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={onClose}
             style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.5)", backdropFilter:"blur(8px)", zIndex:450 }}/>
+          <div key="upm-wrapper" style={{
+            position:"fixed", inset:0, display:"flex", alignItems:"center", justifyContent:"center",
+            zIndex:451, pointerEvents:"none", padding:"16px", boxSizing:"border-box",
+          }}>
           <motion.div key="upm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Account profile"
             initial={{opacity:0,y:32}} animate={{opacity:1,y:0}} exit={{opacity:0,y:32}}
             transition={{duration:0.32,ease:[0.16,1,0.3,1]}}
-            style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:"min(860px,96vw)", maxHeight:"90vh", background:bg, borderRadius:24, border:`1px solid ${border}`, boxShadow:"0 30px 80px rgba(0,0,0,0.35)", zIndex:451, display:"flex", flexDirection:"column", overflow:"hidden" }}>
+            style={{ pointerEvents:"all", position:"relative", width:"min(860px,calc(100vw - 32px))", maxHeight:"calc(100dvh - 32px)", background:bg, borderRadius:24, border:`1px solid ${border}`, boxShadow:"0 30px 80px rgba(0,0,0,0.35)", display:"flex", flexDirection:"column", overflow:"hidden" }}>
 
             {/* Header */}
             <div style={{ padding:"18px 24px 0", flexShrink:0, borderBottom:`1px solid ${border}` }}>
@@ -162,7 +183,7 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
                   <button onClick={()=>{ logout(); onClose(); }} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:9, background:"transparent", border:`1px solid ${border}`, color:sub, fontFamily:sans, fontSize:"0.72rem", fontWeight:600, cursor:"pointer" }}>
                     <LogOut size={12}/> Sign Out
                   </button>
-                  <button onClick={onClose} style={{ background:"none", border:"none", cursor:"pointer", color:sub, display:"flex", padding:6 }}><X size={20}/></button>
+                   <button onClick={onClose} aria-label="Close account profile" style={{ background:"none", border:"none", cursor:"pointer", color:sub, display:"flex", padding:6 }}><X size={20}/></button>
                 </div>
               </div>
 
@@ -181,13 +202,13 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
             </div>
 
             {/* Content */}
-            <div style={{ flex:1, overflowY:"auto", padding:"20px 24px 28px" }}>
+             <div style={{ flex:1, minHeight:0, overflowY:"auto", padding:"20px 24px 28px", boxSizing:"border-box" }}>
               <AnimatePresence mode="wait">
 
                 {/* PROFILE */}
                 {tab === "profile" && (
                   <motion.div key="profile" initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} exit={{opacity:0}}>
-                    <div style={{ maxWidth:480 }}>
+                    <div style={{ width:"100%", maxWidth:480, margin:"0 auto" }}>
                       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, marginBottom:6 }}>
                         <SmField label="Full Name" value={profileForm.name} onChange={v=>setProfileForm(f=>({...f,name:v}))} dark={dark}/>
                         <SmField label="Phone" value={profileForm.phone} onChange={v=>setProfileForm(f=>({...f,phone:v}))} dark={dark}/>
@@ -258,7 +279,7 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
                       </>
                     )}
                     {(addingAddr || editingAddr) && (
-                      <div style={{ maxWidth:480 }}>
+                      <div style={{ width:"100%", maxWidth:480, margin:"0 auto" }}>
                         <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:18 }}>
                           <Btn variant="ghost" small onClick={()=>{ setAddingAddr(false); setEditingAddr(null); }}><X size={12}/> Cancel</Btn>
                           <h3 style={{ fontFamily:serif, fontSize:"1.1rem", fontWeight:700, color:text }}>{editingAddr?"Edit Address":"New Address"}</h3>
@@ -319,7 +340,7 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
                       </>
                     )}
                     {addingCard && (
-                      <div style={{ maxWidth:440 }}>
+                      <div style={{ width:"100%", maxWidth:440, margin:"0 auto" }}>
                         <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:18 }}>
                           <Btn variant="ghost" small onClick={()=>setAddingCard(false)}><X size={12}/> Cancel</Btn>
                           <h3 style={{ fontFamily:serif, fontSize:"1.1rem", fontWeight:700, color:text }}>Add New Card</h3>
@@ -375,6 +396,7 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
                           <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
                             {o.items.slice(0,3).map(item => (
                               <img key={item.id} src={imgUrl(item.imgId)} alt={item.name} title={item.name}
+                                onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }}
                                 style={{ width:36, height:36, borderRadius:8, objectFit:"cover", border:`1px solid ${border}` }}/>
                             ))}
                             {o.items.length > 3 && <div style={{ width:36, height:36, borderRadius:8, background:fBg, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:sans, fontSize:"0.64rem", color:sub }}>+{o.items.length-3}</div>}
@@ -425,7 +447,7 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
                       {wishlistProducts.map(p => (
                         <div key={p.id} style={{ background:panel, borderRadius:16, border:`1px solid ${border}`, overflow:"hidden" }}>
                           <div style={{ position:"relative", cursor:"pointer" }} onClick={()=>{ onProduct(p); onClose(); }}>
-                            <img src={imgUrl(p.imgId)} alt={p.name} style={{ width:"100%", height:130, objectFit:"cover", display:"block" }}/>
+                            <img src={imgUrl(p.imgId)} alt={p.name} onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} style={{ width:"100%", height:130, objectFit:"cover", display:"block" }}/>
                             <button onClick={e=>{ e.stopPropagation(); toggleWishlist(p.id); }}
                               style={{ position:"absolute", top:8, right:8, background:"rgba(0,0,0,0.45)", border:"none", borderRadius:"50%", width:30, height:30, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", color:"#ff6b6b" }}>
                               <Heart size={14} fill="#ff6b6b"/>
@@ -451,6 +473,7 @@ export function UserProfileModal({ open, onClose, dark, onOrderTrack, onProduct 
               </AnimatePresence>
             </div>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
