@@ -1,1 +1,2 @@
 - [Database migration constraints](database-migration-constraints.md) — legacy columns and exact unique-index inference must be handled before seed upserts.
+- [CORS preview origins](cors-preview-origins.md) — Replit preview requests may include the forwarded port in the browser Origin header.

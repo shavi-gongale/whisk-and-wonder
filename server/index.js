@@ -22,16 +22,33 @@ import { verifyToken, requireOwner } from './middleware/auth.js';
 const app = express();
 const PORT = process.env.API_PORT || 3001;
 
+const configuredDomains = [
+  process.env.REPLIT_DEV_DOMAIN,
+  ...(process.env.REPLIT_DOMAINS?.split(',') || []),
+].map(value => String(value || '').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, ''))
+  .filter(Boolean);
 const allowedOrigins = new Set([
   'http://localhost:5000',
   'http://127.0.0.1:5000',
-  ...(process.env.REPLIT_DEV_DOMAIN ? [`https://${process.env.REPLIT_DEV_DOMAIN}`] : []),
-  ...(process.env.REPLIT_DOMAINS?.split(',').map(value => `https://${value.trim()}`).filter(Boolean) || []),
+  ...configuredDomains.flatMap(domain => [
+    `https://${domain}`,
+    `https://${domain}:5000`,
+    `http://${domain}`,
+    `http://${domain}:5000`,
+  ]),
 ]);
+const isAllowedConfiguredOrigin = (origin) => {
+  try {
+    const parsed = new URL(origin);
+    return configuredDomains.includes(parsed.hostname);
+  } catch {
+    return false;
+  }
+};
 const requestWindows = new Map();
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    if (!origin || allowedOrigins.has(origin) || isAllowedConfiguredOrigin(origin)) return callback(null, true);
     return callback(new Error('Origin not allowed'));
   },
   credentials: true,
