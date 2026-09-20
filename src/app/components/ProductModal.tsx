@@ -86,6 +86,15 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
     };
   }, [p?.id]);
 
+  useEffect(() => {
+    if (!p) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [p, onClose]);
+
   if (!p) return null;
 
   const liked    = has(p.id);
@@ -186,6 +195,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                 style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.9)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",cursor:"zoom-out"}}
               >
                 <img src={img(mainImgId, 1200, 900)} alt={p.name}
+                  onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }}
                   style={{maxWidth:"95vw",maxHeight:"90vh",objectFit:"contain",borderRadius:16}}
                 />
                 <button onClick={() => setLightbox(false)}
@@ -201,24 +211,29 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
             position:"fixed", inset:0,
             display:"flex", alignItems:"center", justifyContent:"center",
             zIndex:351, pointerEvents:"none",
-            padding:"20px 16px",
+            padding:"16px", boxSizing:"border-box",
           }}>
           <motion.div key="pm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${p.name} details`}
             initial={{opacity:0,scale:0.94,y:24}}
             animate={{opacity:1,scale:1,y:0}}
             exit={{opacity:0,scale:0.94,y:24}}
             transition={{duration:0.32,ease:[0.16,1,0.3,1]}}
             style={{
-              pointerEvents:"all",
-              width:"min(860px, 95vw)",
-              maxHeight:"90vh", overflowY:"auto",
+               pointerEvents:"all",
+               position:"relative",
+               width:"min(860px, calc(100vw - 32px))",
+               maxHeight:"calc(100dvh - 32px)",
+               display:"flex", flexDirection:"column", overflow:"hidden",
               background:cardBg, borderRadius:28,
               border:`1px solid ${border}`,
               boxShadow:"0 40px 120px rgba(0,0,0,0.45)",
             }}
           >
             {/* Sticky close */}
-            <button onClick={onClose}
+            <button onClick={onClose} aria-label="Close product details"
               style={{
                  position:"absolute",top:12,right:14,
                 background:dark?"rgba(0,0,0,0.5)":"rgba(255,255,255,0.8)",
@@ -231,6 +246,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
             </button>
 
             {/* Two-column layout */}
+            <div style={{overflowY:"auto", minHeight:0, flex:"1 1 auto", overscrollBehavior:"contain", WebkitOverflowScrolling:"touch"}}>
             <div style={{display:"flex", flexDirection: isMobile ? "column" : "row"}}>
 
               {/* ── LEFT: Image Gallery ── */}
@@ -243,6 +259,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                 {/* Main image */}
                 <div style={{position:"relative", overflow:"hidden", borderRadius: isMobile ? "28px 28px 0 0" : "28px 0 0 0"}}>
                   <img src={img(mainImgId, 680, 520)} alt={p.name}
+                    onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }}
                     style={{width:"100%", height: isMobile ? 260 : 380, objectFit:"cover", display:"block", transition:"opacity 0.2s"}}
                   />
                   {/* Zoom button */}
@@ -274,7 +291,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                           border:`2px solid ${mainImgId === gid ? C.hazelnut : "transparent"}`,
                           cursor:"pointer", transition:"border 0.15s",
                         }}>
-                        <img src={img(gid, 120, 90)} alt="" style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
+                        <img src={img(gid, 120, 90)} alt="" onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }} style={{width:"100%",height:"100%",objectFit:"cover",display:"block"}}/>
                       </button>
                     ))}
                   </div>
@@ -478,7 +495,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                             onChange={e => setFbtChecked(prev => ({...prev, [fp.id]: e.target.checked}))}
                             style={{accentColor:C.hazelnut,width:16,height:16}}
                           />
-                          <img src={img(fp.imgId, 80, 60)} alt={fp.name} style={{width:48,height:36,borderRadius:8,objectFit:"cover"}}/>
+                          <img src={img(fp.imgId, 80, 60)} alt={fp.name} onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }} style={{width:48,height:36,borderRadius:8,objectFit:"cover"}}/>
                           <div style={{flex:1,minWidth:0}}>
                             <p style={{fontFamily:sans,fontSize:"0.74rem",fontWeight:600,color:text,margin:0}}>{fp.name}</p>
                             <p style={{fontFamily:serif,fontSize:"0.72rem",fontWeight:700,color:C.peach,margin:0}}>+₹{fp.price}</p>
@@ -509,7 +526,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                         onMouseEnter={e => (e.currentTarget.style.borderColor = C.hazelnut)}
                         onMouseLeave={e => (e.currentTarget.style.borderColor = border)}
                       >
-                        <img src={img(r.imgId,140,100)} alt={r.name} style={{width:"100%",height:70,objectFit:"cover",display:"block"}}/>
+                        <img src={img(r.imgId,140,100)} alt={r.name} onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }} style={{width:"100%",height:70,objectFit:"cover",display:"block"}}/>
                         <div style={{padding:"7px 8px"}}>
                           <p style={{fontFamily:sans,fontSize:"0.62rem",fontWeight:600,color:text,lineHeight:1.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginBottom:2}}>{r.name}</p>
                           <p style={{fontFamily:serif,fontSize:"0.72rem",fontWeight:700,color:C.peach,margin:0}}>₹{r.price}</p>
@@ -535,7 +552,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                         onMouseEnter={e => (e.currentTarget.style.borderColor = C.apricot)}
                         onMouseLeave={e => (e.currentTarget.style.borderColor = border)}
                       >
-                        <img src={img(r.imgId,140,100)} alt={r.name} style={{width:"100%",height:70,objectFit:"cover",display:"block"}}/>
+                        <img src={img(r.imgId,140,100)} alt={r.name} onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }} style={{width:"100%",height:70,objectFit:"cover",display:"block"}}/>
                         <div style={{padding:"7px 8px"}}>
                           <p style={{fontFamily:sans,fontSize:"0.62rem",fontWeight:600,color:text,lineHeight:1.3,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",marginBottom:2}}>{r.name}</p>
                           <p style={{fontFamily:serif,fontSize:"0.72rem",fontWeight:700,color:C.peach,margin:0}}>₹{r.price}</p>
@@ -639,6 +656,7 @@ export function ProductModal({ product: p, onClose, dark, onProduct }: Props) {
                   </div>
                 )}
               </div>
+            </div>
             </div>
           </motion.div>
           </div>

@@ -552,7 +552,7 @@ function CategoriesSection({ dark, onProduct }: { dark:boolean; onProduct:(p:Pro
             const Icon = categoryIcons[label] ?? Sparkles;
             return (
               <motion.button key={label} onClick={()=>handleCategory(label)}
-                initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+                initial={{ opacity:1, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
                 transition={{ delay:i*0.025 }} whileHover={{ y:-3, scale:1.03 }} whileTap={{ scale:0.97 }}
                 style={{ display:"flex", alignItems:"center", gap:8, padding:"11px 20px", borderRadius:100, background:isActive?(dark?C.apricot:C.hazelnut):(dark?"rgba(255,255,255,0.05)":C.crema), border:`1px solid ${isActive?"transparent":dark?"rgba(255,255,255,0.08)":C.shortbread}`, cursor:"pointer", boxShadow:isActive?"0 8px 28px rgba(122,92,58,0.28)":"0 2px 10px rgba(0,0,0,0.04)", transition:"all 0.22s ease" }}>
                 <Icon size={13} color={isActive?(dark?C.cocoa:C.crema):(dark?`${C.oats}AA`:C.hazelnut)} />
@@ -644,7 +644,7 @@ function ProductCard({ p, dark, onOpen }: { p: Product; dark:boolean; onOpen:()=
       onClick={onOpen}
       onKeyDown={e=>{ if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
     >
-      <motion.div initial={{ opacity:0, y:32 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+      <motion.div initial={{ opacity:1, y:32 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
         whileHover={{ boxShadow:`0 36px 80px rgba(0,0,0,${dark?0.48:0.16})`, y:-8 }}
         style={{ rotateX:springRX, rotateY:springRY, background:dark?"#3A2A1E":C.crema, borderRadius:28, overflow:"hidden", border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}`, boxShadow:`0 8px 32px rgba(0,0,0,${dark?0.28:0.07})`, cursor:"pointer", transformStyle:"preserve-3d", display:"flex", flexDirection:"column" }}
         transition={{ duration:0.32 }} onMouseMove={handleTilt} onMouseLeave={()=>{rotateX.set(0);rotateY.set(0);}}>
@@ -1222,7 +1222,7 @@ function BestSellers({ dark, onProduct }: { dark:boolean; onProduct:(p:Product)=
         style={{ display:"flex", gap:18, overflowX:"auto", paddingLeft:"max(24px,calc((100vw - 1440px) / 2 + 24px))", paddingRight:24, paddingBottom:6 }}>
         {sellers.map((s,i)=>(
            <motion.div key={s.id}
-            initial={{ opacity:0, x:30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
+            initial={{ opacity:1, x:30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
             transition={{ delay:i*0.07 }} whileHover={{ y:-8, boxShadow:`0 30px 64px rgba(0,0,0,${dark?0.42:0.14})` }}
              role="button" tabIndex={0} aria-label={`View details for ${s.name}`}
              onClick={()=>onProduct(s)}
@@ -1275,7 +1275,7 @@ function BakeryStory({ dark }: { dark:boolean }) {
           <div style={{ display:"flex", flexDirection:"column", gap:48 }}>
             {story.map((s,i)=>(
               <motion.div key={s.year}
-                initial={{ opacity:0, x:i%2===0?-34:34 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true, margin:"-40px" }}
+                initial={{ opacity:1, x:i%2===0?-34:34 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true, margin:"-40px" }}
                 transition={{ duration:0.65, ease:[0.16,1,0.3,1] }}
                 style={{ position:"relative", display:"flex", justifyContent:i%2===0?"flex-start":"flex-end", paddingLeft:48 }}>
                 <div style={{ position:"absolute", left:0, top:8, width:36, height:36, borderRadius:"50%", background:`linear-gradient(135deg,${i%2===0?C.peach:C.lilac},${i%2===0?C.apricot:C.lavender})`, border:`3px solid ${dark?"#1C1008":C.oats}`, display:"flex", alignItems:"center", justifyContent:"center", boxShadow:`0 0 0 4px ${i%2===0?`${C.peach}22`:`${C.lilac}22`}`, zIndex:1 }}>
@@ -1321,7 +1321,7 @@ function ReviewsSection({ dark }: { dark:boolean }) {
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap:24 }}>
           {reviews.map((r,i)=>(
             <motion.div key={r.name}
-              initial={{ opacity:0, y:32 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+              initial={{ opacity:1, y:32 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ delay:i*0.1, duration:0.58 }} whileHover={{ y:-8 }}
               style={{ background:dark?"rgba(58,42,30,0.72)":"rgba(250,246,240,0.95)", backdropFilter:"blur(16px)", WebkitBackdropFilter:"blur(16px)", borderRadius:24, padding:"32px 28px", border:`1px solid ${dark?"rgba(255,255,255,0.07)":"rgba(224,206,180,0.5)"}`, boxShadow:`0 8px 32px rgba(0,0,0,${dark?0.22:0.06})`, position:"relative" }}>
               <div style={{ position:"absolute", top:0, left:0, right:0, height:3, background:`linear-gradient(90deg,${r.bg},${r.bg}88)`, borderRadius:"24px 24px 0 0" }} />
@@ -1378,10 +1378,11 @@ function GallerySection({ dark }: { dark:boolean }) {
         <div className="columns-2 md:columns-3" style={{ columnGap:16 }}>
           {galleryItems.map((g,i)=>(
             <motion.div key={i} className="break-inside-avoid group relative overflow-hidden cursor-pointer"
-              initial={{ opacity:0, scale:0.96 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true }}
+              initial={{ opacity:1, scale:0.96 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true }}
               transition={{ delay:i*0.05, duration:0.52 }}
               style={{ borderRadius:20, marginBottom:16, height:g.h, overflow:"hidden" }}>
-              <motion.img src={img(g.imgId,420,g.h)} alt={g.caption} className="w-full h-full object-cover" whileHover={{ scale:1.08 }} transition={{ duration:0.5 }} loading="lazy" />
+               <motion.img src={img(g.imgId,420,g.h)} alt={g.caption} className="w-full h-full object-cover" whileHover={{ scale:1.08 }} transition={{ duration:0.5 }} loading="lazy"
+                 onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} />
               <motion.div initial={{ opacity:0 }} whileHover={{ opacity:1 }} transition={{ duration:0.26 }}
                 style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(74,55,40,0.72) 0%,rgba(74,55,40,0.18) 50%,transparent 100%)", display:"flex", alignItems:"flex-end", padding:"18px 20px", backdropFilter:"blur(2px)" }}>
                 <p style={{ fontFamily:sans, fontSize:"0.77rem", fontWeight:600, color:C.crema, letterSpacing:"0.04em" }}>{g.caption}</p>
@@ -1692,13 +1693,14 @@ function TodaysSpecialSection({ dark, onProduct }: { dark:boolean; onProduct:(p:
   return (
     <section style={{ position:"relative", background:"#1A0F08", overflow:"hidden", minHeight:"68vh", display:"flex", alignItems:"center" }}>
       <div style={{ position:"absolute", inset:0 }}>
-        <img src={`https://images.unsplash.com/photo-${special.imgId}?w=1800&h=900&fit=crop&auto=format&q=88`}
-          alt={special.name} style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }} loading="lazy" />
+         <img src={`https://images.unsplash.com/photo-${special.imgId}?w=1800&h=900&fit=crop&auto=format&q=88`}
+           alt={special.name} style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 40%" }} loading="lazy"
+           onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(90deg, rgba(14,6,2,0.88) 0%, rgba(14,6,2,0.55) 46%, rgba(14,6,2,0.22) 80%, rgba(14,6,2,0.1) 100%)" }} />
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(0deg, rgba(14,6,2,0.46) 0%, transparent 40%)" }} />
       </div>
       <div style={{ position:"relative", zIndex:1, maxWidth:1440, margin:"0 auto", padding:"80px 48px", width:"100%" }}>
-        <motion.div initial={{ opacity:0, x:-36 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.7, ease:[0.16,1,0.3,1] }}>
+        <motion.div initial={{ opacity:1, x:-36 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.7, ease:[0.16,1,0.3,1] }}>
           <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 18px", borderRadius:100, background:`${C.peach}22`, border:`1px solid ${C.peach}44`, marginBottom:28 }}>
             <motion.div animate={{ opacity:[1,0.4,1] }} transition={{ duration:1.8, repeat:Infinity }}
               style={{ width:7, height:7, borderRadius:"50%", background:C.peach, boxShadow:`0 0 12px ${C.peach}` }} />
@@ -1780,7 +1782,7 @@ function WhyChooseUsSection({ dark }: { dark:boolean }) {
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(min(290px,100%),1fr))", gap:22 }}>
           {features.map((f,i) => (
             <motion.div key={f.title}
-              initial={{ opacity:0, y:28 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+              initial={{ opacity:1, y:28 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ delay:i*0.08, duration:0.55 }}
               whileHover={{ y:-7, boxShadow:`0 28px 64px rgba(0,0,0,${dark?0.38:0.10})` }}
               style={{ padding:"34px 28px", borderRadius:24, background:dark?"rgba(255,255,255,0.04)":C.crema, border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}`, cursor:"default", transition:"box-shadow 0.28s ease, transform 0.28s ease" }}>
@@ -1824,7 +1826,7 @@ function DeliveryInfoSection({ dark }: { dark:boolean }) {
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(min(240px,100%),1fr))", gap:16, marginBottom:52 }}>
           {infos.map((info,i) => (
             <motion.div key={info.title}
-              initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
+              initial={{ opacity:1, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
               transition={{ delay:i*0.07 }}
               style={{ padding:"26px 26px", borderRadius:20, background:dark?"rgba(255,255,255,0.05)":C.oats, border:`1px solid ${dark?"rgba(255,255,255,0.08)":C.shortbread}` }}>
               <div style={{ marginBottom:12, display:"flex" }}><info.Icon size={22} color={dark?C.apricot:C.peach}/></div>
@@ -1837,7 +1839,7 @@ function DeliveryInfoSection({ dark }: { dark:boolean }) {
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(min(320px,100%),1fr))", gap:11 }}>
           {zones.map((z,i) => (
             <motion.div key={z.name}
-              initial={{ opacity:0, x:-16 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
+              initial={{ opacity:1, x:-16 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
               transition={{ delay:i*0.06 }}
               style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"16px 20px", borderRadius:14, background:dark?"rgba(255,255,255,0.04)":C.oats, border:`1px solid ${dark?"rgba(255,255,255,0.07)":C.shortbread}` }}>
               <div style={{ display:"flex", alignItems:"center", gap:10 }}>
@@ -1907,7 +1909,7 @@ function WishlistDrawer({ open, onClose, dark, onProduct }: { open:boolean; onCl
                   {wishItems.map(p=>(
                     <motion.div key={p.id} layout initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
                       style={{ display:"flex", gap:12, padding:"14px 16px", borderRadius:18, background:dark?"rgba(255,255,255,0.04)":C.oats, border:`1px solid ${border}` }}>
-                      <img src={`https://images.unsplash.com/photo-${p.imgId}?w=80&h=80&fit=crop&auto=format&q=80`} alt={p.name} style={{ width:60, height:60, borderRadius:12, objectFit:"cover", flexShrink:0 }} onClick={()=>{onClose();onProduct(p);}} className="cursor-pointer"/>
+                       <img src={`https://images.unsplash.com/photo-${p.imgId}?w=80&h=80&fit=crop&auto=format&q=80`} alt={p.name} style={{ width:60, height:60, borderRadius:12, objectFit:"cover", flexShrink:0 }} onError={e=>{ e.currentTarget.onerror=null; e.currentTarget.src="/assets/bakery-entrance.png"; }} onClick={()=>{onClose();onProduct(p);}} className="cursor-pointer"/>
                       <div style={{ flex:1, minWidth:0 }}>
                         <p style={{ fontFamily:serif, fontSize:"0.86rem", fontWeight:700, color:text, marginBottom:2, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", cursor:"pointer" }} onClick={()=>{onClose();onProduct(p);}}>{p.name}</p>
                         <p style={{ fontFamily:sans, fontSize:"0.68rem", color:sub, marginBottom:8 }}>{p.category}</p>

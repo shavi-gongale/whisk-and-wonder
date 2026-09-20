@@ -108,7 +108,8 @@ export function CartDrawer({ open, onClose, dark, onCheckout }: Props) {
                         }}
                       >
                         <img
-                          src={img(item.imgId)} alt={item.name}
+                           src={img(item.imgId)} alt={item.name}
+                           onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }}
                           style={{ width:62, height:62, borderRadius:12, objectFit:"cover", flexShrink:0 }}
                         />
                         <div style={{ flex:1, minWidth:0 }}>

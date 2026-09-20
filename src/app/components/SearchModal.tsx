@@ -327,7 +327,7 @@ export function SearchModal({ open, onClose, dark, onProduct }: Props) {
                         onMouseEnter={e => (e.currentTarget.style.background = dark?"rgba(255,255,255,0.04)":C.oats)}
                         onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                       >
-                        <img src={img(p.imgId)} alt={p.name} style={{ width:52, height:52, borderRadius:10, objectFit:"cover", flexShrink:0 }} />
+                         <img src={img(p.imgId)} alt={p.name} onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = "/assets/bakery-entrance.png"; }} style={{ width:52, height:52, borderRadius:10, objectFit:"cover", flexShrink:0 }} />
                         <div style={{ flex:1, minWidth:0 }}>
                           <p style={{ fontFamily:serif, fontSize:"0.92rem", fontWeight:700, color:text, marginBottom:3 }}>{p.name}</p>
                           <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
