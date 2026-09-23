@@ -23,8 +23,7 @@ const app = express();
 const PORT = process.env.API_PORT || 3001;
 
 const configuredDomains = [
-  process.env.REPLIT_DEV_DOMAIN,
-  ...(process.env.REPLIT_DOMAINS?.split(',') || []),
+  ...(process.env.CORS_ORIGINS?.split(',') || []),
 ].map(value => String(value || '').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, ''))
   .filter(Boolean);
 const allowedOrigins = new Set([

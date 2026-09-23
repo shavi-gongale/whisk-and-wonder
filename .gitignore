@@ -1,0 +1,34 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+
+.env
+.env.*
+!.env.example
+
+.vscode/
+.agents/
+.DS_Store
+Thumbs.db
+
+# Local database files and dumps
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+
+# Temporary and generated files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.zip
+package-firewall.replit.local
+
+# Local project exports
+extracted_project/
+attached_assets/

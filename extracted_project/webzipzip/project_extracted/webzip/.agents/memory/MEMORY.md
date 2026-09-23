@@ -1,2 +1,0 @@
-- [React 18 + Leaflet maps](react-leaflet-react18.md) — use react-leaflet v4, not v5, when the app is on React 18.
-- [react-dnd context placement](react-dnd-context-placement.md) — DndProvider must be an ancestor component of useDrag/useDrop callers, never rendered by the same component that calls the hook.
