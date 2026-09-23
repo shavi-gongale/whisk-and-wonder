@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: whisk-and-wonder
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: whisk-wonder-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: OWNER_EMAIL
+        sync: false
+      - key: OWNER_PASSWORD
+        sync: false
+      - key: OWNER_NAME
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: RAZORPAY_WEBHOOK_SECRET
+        sync: false
+      - key: PASSWORD_RESET_URL
+        sync: false
+      - key: EMAIL_PROVIDER
+        sync: false
+
+databases:
+  - name: whisk-wonder-db
+    databaseName: whisk_wonder
+    user: whisk_wonder

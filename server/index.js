@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import pool from './db.js';
 import { initDb } from './init-db.js';
 import authRouter from './routes/auth.js';
@@ -20,7 +22,8 @@ import deliveryRouter from './routes/delivery.js';
 import { verifyToken, requireOwner } from './middleware/auth.js';
 
 const app = express();
-const PORT = process.env.API_PORT || 3001;
+const PORT = process.env.PORT || process.env.API_PORT || 3001;
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const configuredDomains = [
   ...(process.env.CORS_ORIGINS?.split(',') || []),
@@ -134,6 +137,11 @@ app.get('/api/analytics', verifyToken, requireOwner, async (req, res) => {
       recentOrders: recentOrders.rows,
     });
   } catch (err) { console.error(err); res.status(500).json({ error: 'Server error' }); }
+});
+
+app.use(express.static(path.join(ROOT, 'dist')));
+app.get(/^(?!\/api(?:\/|$)).*/, (_req, res) => {
+  res.sendFile(path.join(ROOT, 'dist', 'index.html'));
 });
 
 initDb()
